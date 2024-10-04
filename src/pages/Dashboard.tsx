@@ -1,77 +1,112 @@
-import React from 'react';
+import React, { useState } from 'react';
 import VideoCard from '../components/VideoCard';
 import PlantDetailCard from '../components/PlantDetailCard';
+import CircularProgress from '../components/CircularProgress';
+import Filters from '../components/Filters';
 
-interface CircularProgressProps {
-  value: number;
-  label: string;
-  size?: 'small' | 'large';
+interface Plant {
+  id: string;
+  image: string;
+  circularity: number;
+  eccentricity: number;
+  area: string;
+  perimeter: string;
+  confidenceThreshold: number;
+  appearance: string;
+  rating: string;
 }
 
-const CircularProgress: React.FC<CircularProgressProps> = ({
-  value,
-  label,
-  size = 'large',
-}) => {
-  const sizeClass = size === 'small' ? 'w-24 h-24' : 'w-48 h-48';
-  const fontSizeClass = size === 'small' ? 'text-xs' : 'text-sm';
-  const labelFontSizeClass = size === 'small' ? 'text-xs' : 'text-base';
-
-  return (
-    <div className="flex flex-col items-center space-y-1 border-white border justify-center p-4 border-4 hover:bg-white/20">
-      <div className={`relative ${sizeClass}`}>
-        <svg className={`${sizeClass} transform -rotate-90`} viewBox="0 0 36 36">
-          {/* Background Circle */}
-          <path
-            className="text-gray-400"
-            d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="5"
-            strokeDasharray="4, 2" // Dashed stroke
-          />
-          {/* Progress Circle */}
-          <path
-            className="text-white"
-            d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="5"
-            strokeDasharray={`${value * 100}, 100`}
-            strokeLinecap="round"
-          />
-        </svg>
-        {/* Value inside the circle */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className={`font-semibold text-white ${fontSizeClass}`}>
-            {(value * 100).toFixed(1)}%
-          </span>
-        </div>
-      </div>
-      <div className={`text-white font-semibold ${labelFontSizeClass}`}>{label}</div>
-    </div>
-  );
-};
-
 const Dashboard: React.FC = () => {
+  // State to store the list of plants
+  const [plants] = useState<Plant[]>(
+    [...Array(10)].map((_, idx) => ({
+      id: `1234-${idx}`,
+      image: 'https://cdn.mos.cms.futurecdn.net/ENHKamYXrusiMeT5Yie5ei.jpg',
+      circularity: 0.85,
+      eccentricity: 0.45,
+      area: '1345',
+      perimeter: '234',
+      confidenceThreshold: 0.95,
+      appearance: 'Healthy',
+      rating: 'Good',
+    }))
+  );
+
+  // State to store filter criteria, including min and max for ranges
+  const [filters, setFilters] = useState<{
+    id?: string;
+    appearance?: string;
+    rating?: string;
+    circularityMin?: number;
+    circularityMax?: number;
+    eccentricityMin?: number;
+    eccentricityMax?: number;
+    confidenceThresholdMin?: number;
+    confidenceThresholdMax?: number;
+  }>({});
+
+  // Handle filter input change for text and dropdowns
+  const handleFilterChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
+  };
+
+  // Handle range filter change for dual-sided ranges
+  const handleRangeChange = (name: string, min: number, max: number) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [`${name}Min`]: min,
+      [`${name}Max`]: max,
+    }));
+  };
+
+  // Filter the list of plants based on the filter criteria
+  const filteredPlants = plants.filter((plant) => {
+    return (
+      (!filters.id || plant.id.includes(filters.id)) &&
+      (!filters.appearance || plant.appearance === filters.appearance) &&
+      (!filters.rating || plant.rating === filters.rating) &&
+      (!filters.circularityMin ||
+        (plant.circularity >= filters.circularityMin &&
+          plant.circularity <= (filters.circularityMax ?? 1))) &&
+      (!filters.eccentricityMin ||
+        (plant.eccentricity >= filters.eccentricityMin &&
+          plant.eccentricity <= (filters.eccentricityMax ?? 1))) &&
+      (!filters.confidenceThresholdMin ||
+        (plant.confidenceThreshold >= filters.confidenceThresholdMin &&
+          plant.confidenceThreshold <= (filters.confidenceThresholdMax ?? 1)))
+    );
+  });
+
   return (
     <div className="p-4 min-h-full">
       <div className="container mx-auto space-y-6">
-        {/* Combined Card for Videos, Download Button, Collection Information, and Circular Chart */}
+        {/* Large Information Card */}
         <div className="rounded-lg shadow-md p-6 bg-white/10 relative">
           {/* Plant Name Tag on the Top Left */}
-          <div className="absolute top-0 left-0 bg-gray-200 text-black px-4 py-2 font-semibold text-xl rounded-tl-lg rounded-br-lg">
-            Azalea | Bed: A-12
+          <div className="absolute top-0 left-0 bg-gray-200 text-black px-4 py-2 font-semibold text-xl">
+            Azalea
           </div>
-          <button className="absolute px-4 py-2 top-0 right-0 bg-blue-500 text-xl rounded-tr-lg rounded-bl-lg transition hover:bg-blue-700">
-            Download XLSX
-          </button>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pt-10 items-center justify-center">
+          {/* Bed, Download Button */}
+          <div className="flex justify-between items-center mb-6 pt-10">
+            <div className="px-4 py-2 bg-gray-300 rounded-lg font-semibold text-3xl text-black">
+              Bed: A-12
+            </div>
+            <div className="flex space-x-4">
+              <button className="px-4 py-2 bg-blue-500 rounded-lg transition hover:bg-blue-700">
+                Download XLSX
+              </button>
+            </div>
+          </div>
+
+          {/* Three Columns Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             {/* Left Column - Videos */}
             <div className="space-y-4">
               <VideoCard title="Original Video" videoSrc="/path/to/original-video.mp4" />
@@ -102,7 +137,7 @@ const Dashboard: React.FC = () => {
             {/* Right Column - Average Circularity, Eccentricity, Perimeter, Area, Collection Date, and GPS Location */}
             <div className="space-y-4">
               {/* Average Circularity and Eccentricity */}
-              <div className="flex items-center justify-center space-x-4">
+              <div className="flex items-center space-x-4">
                 <CircularProgress value={0.85} label="Average Circularity" size="small" />
                 <CircularProgress value={0.45} label="Average Eccentricity" size="small" />
               </div>
@@ -140,21 +175,13 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
+        {/* Filter Section */}
+        <Filters filters={filters} handleFilterChange={handleFilterChange} handleRangeChange={handleRangeChange} />
+
         {/* Plant Details Cards */}
         <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
-          {[...Array(90)].map((_, idx) => (
-            <PlantDetailCard
-              key={idx}
-              id="1234"
-              image="https://cdn.mos.cms.futurecdn.net/ENHKamYXrusiMeT5Yie5ei.jpg"
-              circularity={0.85}
-              eccentricity={0.45}
-              area="1345"
-              perimeter="234"
-              confidenceThreshold={0.95}
-              appearance="Healthy"
-              rating="Good"
-            />
+          {filteredPlants.map((plant) => (
+            <PlantDetailCard key={plant.id} {...plant} />
           ))}
         </div>
       </div>
