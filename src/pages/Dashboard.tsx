@@ -32,7 +32,7 @@ const Dashboard: React.FC = () => {
           </div>
 
           {/* Videos Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 pt-10">
             <div>
               <p className="mb-2 text-center font-semibold">Original Video</p>
               <video className="w-full h-48 rounded-md border-2 border-gray-200" controls>
