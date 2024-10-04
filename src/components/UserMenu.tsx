@@ -11,7 +11,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ darkMode }) => {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className={`p-4 rounded-full transition ${darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-800 text-white hover:bg-gray-700'}`}
+        className={`p-4 rounded-full transition ${darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-700 text-white hover:bg-gray-700'}`}
       >
         <i className="fas fa-user fa-lg"></i>
       </button>
