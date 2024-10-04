@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import BottomMenu from './components/BottomMenu';
+import Dock from './components/Dock';
 import UserMenu from './components/UserMenu';
 import Dashboard from './pages/Dashboard';
 import Map from './pages/Map';
@@ -17,7 +17,7 @@ const App: React.FC = () => {
         <div className="h-full w-full overflow-y-auto">
           {currentPage === 'dashboard' ? <Dashboard /> : <Map />}
         </div>
-        <BottomMenu darkMode={darkMode} setDarkMode={setDarkMode} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <Dock darkMode={darkMode} setDarkMode={setDarkMode} currentPage={currentPage} setCurrentPage={setCurrentPage} />
       </div>
     </div>
   );
