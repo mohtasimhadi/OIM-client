@@ -71,7 +71,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ files, onClose, onSubmit }) =
                 type="text"
                 value={info.bedNumber}
                 onChange={(e) => handleBedNumberChange(index, e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-2 border border-gray-300 rounded text-black"
                 placeholder="Enter bed number"
               />
             </div>
