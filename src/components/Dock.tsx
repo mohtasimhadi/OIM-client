@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '@fortawesome/fontawesome-free/css/all.min.css'; // Make sure this line is in your main entry file or here for icons
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 interface BottomMenuProps {
   darkMode: boolean;
@@ -19,7 +19,6 @@ const Dock: React.FC<BottomMenuProps> = ({ darkMode, setDarkMode, currentPage, s
       } max-w-2xl flex items-center bg-white/20 text-white p-4 rounded-full shadow-lg backdrop-blur-lg transition-all duration-300 ease-in-out`}
     >
       {isSearching ? (
-        // Full Dock Search Bar
         <div className="flex flex-1 items-center space-x-2 px-4">
           <input
             type="text"
@@ -35,21 +34,18 @@ const Dock: React.FC<BottomMenuProps> = ({ darkMode, setDarkMode, currentPage, s
             }}
             className="text-white px-2"
           >
-            <i className="fas fa-times"></i> {/* Close Icon */}
+            <i className="fas fa-times"></i>
           </button>
         </div>
       ) : (
-        // Regular Dock with Search Icon
         <>
-          {/* Search Icon */}
           <button
             onClick={() => setIsSearching(true)}
             className="text-white px-2"
           >
-            <i className="fas fa-search"></i> {/* Search Icon */}
+            <i className="fas fa-search"></i>
           </button>
 
-          {/* Navigation Buttons */}
           <button
             className={`flex-1 text-center transition-colors ${
               currentPage === 'dashboard' ? (darkMode ? 'text-blue-400' : 'text-[#a3b18a]') : ''
@@ -66,11 +62,17 @@ const Dock: React.FC<BottomMenuProps> = ({ darkMode, setDarkMode, currentPage, s
           >
             Map
           </button>
-          
-          {/* Vertical Divider */}
+          <button
+            className={`flex-1 text-center transition-colors ${
+              currentPage === 'upload' ? (darkMode ? 'text-blue-400' : 'text-[#a3b18a]') : ''
+            } font-bold`}
+            onClick={() => setCurrentPage('upload')}
+          >
+            Upload
+          </button>
+
           <div className="h-6 w-px bg-white mx-4"></div>
-          
-          {/* Custom Toggle Switch for Dark/Light Mode */}
+
           <div className="flex items-center space-x-2">
             <div
               onClick={() => setDarkMode(!darkMode)}
