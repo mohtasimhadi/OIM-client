@@ -82,15 +82,15 @@ const Dashboard: React.FC = () => {
           {[...Array(4)].map((_, idx) => (
             <PlantDetailCard
               key={idx}
-              items={[
-                { label: 'ID', value: '1234' },
-                { label: 'Circularity', value: '0.85' },
-                { label: 'Eccentricity', value: '0.45' },
-                { label: 'Area', value: '15.4 cm²' },
-                { label: 'Perimeter', value: '25.6 cm' },
-                { label: 'Confidence Threshold', value: '95%' },
-                { label: 'Appearance', value: 'Healthy' },
-              ]}
+              id = '1234'
+              image="https://cdn.mos.cms.futurecdn.net/ENHKamYXrusiMeT5Yie5ei.jpg"
+              circularity={.85}
+              eccentricity={.45}
+              area='1345'
+              perimeter='234'
+              confidenceThreshold={0.95}
+              appearance='Healthy'
+              rating='Good'
             />
           ))}
         </div>
