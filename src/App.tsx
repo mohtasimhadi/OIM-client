@@ -4,7 +4,7 @@ import UserMenu from './components/UserMenu';
 import Dashboard from './components/Dashboard';
 
 const App: React.FC = () => {
-  const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [darkMode, setDarkMode] = useState<boolean>(true);
 
   return (
     <div className={`w-screen h-screen overflow-hidden ${darkMode ? "bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white" : "bg-gradient-to-br from-[#99e2b4] via-[#88d4ab] to-[#036666] text-black"}`}>
@@ -13,7 +13,7 @@ const App: React.FC = () => {
           <UserMenu darkMode={darkMode} />
         </div>
         <div className="h-full w-full overflow-y-auto">
-          <Dashboard darkMode={darkMode} />
+          <Dashboard/>
         </div>
         <BottomMenu darkMode={darkMode} setDarkMode={setDarkMode} />
       </div>

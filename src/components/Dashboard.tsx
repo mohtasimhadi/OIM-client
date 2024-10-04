@@ -1,16 +1,12 @@
 import React from 'react';
 
-interface DashboardProps {
-  darkMode: boolean;
-}
-
-const Dashboard: React.FC<DashboardProps> = ({ darkMode }) => {
+const Dashboard: React.FC = () => {
   return (
-    <div className={`p-4 min-h-full ${darkMode ? '' : ''}`}>
+    <div className={`p-4 min-h-full`}>
       <div className="container mx-auto space-y-6">
         {/* Upload Section */}
-        <div className={`rounded-lg shadow-md p-6 bg-white/10 text-white`}>
-          <button className={`px-4 py-2 rounded-lg transition ${darkMode ? 'bg-green-700 text-white hover:bg-blue-800' : 'bg-green-600 text-white hover:bg-blue-700'}`}>
+        <div className={`rounded-lg shadow-md p-6 bg-white/10 `}>
+          <button className={`px-4 py-2 rounded-lg transition hover:bg-blue-700`}>
             Upload
           </button>
         </div>
@@ -27,13 +23,13 @@ const Dashboard: React.FC<DashboardProps> = ({ darkMode }) => {
 
         {/* Download Section */}
         <div className={`rounded-lg shadow-md p-6 text-center bg-white/10`}>
-          <button className={`px-4 py-2 rounded-lg transition ${darkMode ? 'bg-green-700 text-white hover:bg-green-800' : 'bg-green-600 text-white hover:bg-green-700'}`}>
+          <button className={`px-4 py-2 bg-green-500 rounded-lg transition hover:bg-green-700`}>
             Download CSV/XLSX
           </button>
         </div>
 
         {/* Collection Information Card */}
-        <div className={`rounded-lg shadow-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-white/10 text-white`}>
+        <div className={`rounded-lg shadow-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-white/10 `}>
           <h3 className="font-semibold text-xl col-span-full">Collection Information</h3>
           <ul className="space-y-2">
             <li><strong>Collection Date:</strong> 2024-10-03</li>
@@ -54,7 +50,7 @@ const Dashboard: React.FC<DashboardProps> = ({ darkMode }) => {
         {/* Plant Details Cards */}
         <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {[...Array(4)].map((_, idx) => (
-            <div key={idx} className={`rounded-lg shadow-lg p-6 flex items-center space-x-4 bg-white/10 text-white`}>
+            <div key={idx} className={`rounded-lg shadow-lg p-6 flex items-center space-x-4 bg-white/10 `}>
               <img
                 src="https://via.placeholder.com/150"
                 alt="Plant"
