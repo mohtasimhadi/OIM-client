@@ -3,13 +3,30 @@ import React from 'react';
 interface BottomMenuProps {
   darkMode: boolean;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+  currentPage: string;
+  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const BottomMenu: React.FC<BottomMenuProps> = ({ darkMode, setDarkMode }) => {
+const BottomMenu: React.FC<BottomMenuProps> = ({ darkMode, setDarkMode, currentPage, setCurrentPage }) => {
   return (
     <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-3/4 max-w-md flex justify-around items-center bg-gray-800/90 text-white p-4 rounded-full shadow-lg backdrop-blur-lg">
-      <button className="flex-1 text-center">Dashboard</button>
-      <button className="flex-1 text-center">Map</button>
+      {/* Navigation Buttons */}
+      <button
+        className={`flex-1 text-center transition-colors ${currentPage === 'dashboard' ? 'text-blue-400 font-bold' : ''}`}
+        onClick={() => setCurrentPage('dashboard')}
+      >
+        Dashboard
+      </button>
+      <button
+        className={`flex-1 text-center transition-colors ${currentPage === 'map' ? 'text-blue-400 font-bold' : ''}`}
+        onClick={() => setCurrentPage('map')}
+      >
+        Map
+      </button>
+      
+      {/* Vertical Divider */}
+      <div className="h-6 w-px bg-white mx-4"></div>
+      
       {/* Custom Toggle Switch for Dark/Light Mode */}
       <div className="flex items-center space-x-2">
         <div
