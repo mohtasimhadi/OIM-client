@@ -12,7 +12,7 @@ const App: React.FC = () => {
   return (
     <div className={`w-screen h-screen overflow-hidden ${darkMode ? "bg-gradient-to-br from-[#00253e] via-[#00253e] to-black text-white" : "bg-gradient-to-br from-[#415d43] via-[#415d43] to-[#111d13] text-white"}`}>
       <div className="relative h-full w-full p-4">
-        <div className="absolute top-5 right-10 m-4">
+        <div className="absolute top-5 right-10 m-4 z-50">
           <UserMenu darkMode={darkMode} />
         </div>
         <div className="h-full w-full overflow-y-auto">
