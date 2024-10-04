@@ -142,7 +142,7 @@ const Dashboard: React.FC = () => {
 
         {/* Plant Details Cards */}
         <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
-          {[...Array(4)].map((_, idx) => (
+          {[...Array(90)].map((_, idx) => (
             <PlantDetailCard
               key={idx}
               id="1234"

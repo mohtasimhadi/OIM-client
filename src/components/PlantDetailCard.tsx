@@ -65,61 +65,69 @@ const PlantDetailCard: React.FC<PlantDetailCardProps> = ({
   appearance,
   rating,
 }) => (
-  <div className="relative rounded-lg shadow-lg p-6 flex items-center space-x-4 bg-white/10">
+  <div className="relative rounded-lg shadow-lg p-6 flex bg-white/10">
     {/* Plant ID Tag */}
-    <div className="absolute top-2 right-2 bg-blue-500 text-white px-3 py-1 rounded-md text-xs font-bold shadow-md">
+    <div className="absolute top-0 left-0 bg-white text-black px-3 py-2 rounded-tl-lg rounded-br-lg text-xs font-bold">
       Plant ID: {id}
     </div>
 
-    {/* Plant Image */}
-    <img src={image} alt="Plant" className="w-1/3 h-full rounded-md shadow-sm" />
+    {/* Left Column - Plant Image */}
+    <div className="w-1/3">
+      <img src={image} alt="Plant" className="w-full h-full rounded-md shadow-sm" />
+    </div>
 
-    {/* Plant Details */}
-    <div className="flex-1 space-y-3">
-      {/* Circularity, Eccentricity, and Confidence Threshold with Circular Progress Bars Side by Side */}
+    {/* Right Column - Details */}
+    <div className="w-2/3 flex flex-col space-y-4 pl-6">
+      {/* First Row - Circularity, Eccentricity, Confidence Threshold */}
       <div className="flex items-center justify-around space-x-4">
         <CircularProgress value={circularity} label="Circularity" />
         <CircularProgress value={eccentricity} label="Eccentricity" />
         <CircularProgress value={confidenceThreshold} label="Confidence Threshold" />
       </div>
 
-      {/* Area */}
-      <div className="flex">
-        <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-          Area:
+      {/* Second Row - Area and Perimeter */}
+      <div className="grid grid-cols-2 gap-4">
+        {/* Area */}
+        <div className="flex">
+          <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
+            Area:
+          </div>
+          <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
+            {area}
+          </div>
         </div>
-        <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
-          {area}
+
+        {/* Perimeter */}
+        <div className="flex">
+          <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
+            Perimeter:
+          </div>
+          <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
+            {perimeter}
+          </div>
         </div>
       </div>
 
-      {/* Perimeter */}
-      <div className="flex">
-        <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-          Perimeter:
+      {/* Third Row - Appearance and Rating */}
+      <div className="grid grid-cols-2 gap-4">
+        {/* Appearance */}
+        <div className="flex">
+          <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
+            Appearance:
+          </div>
+          <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
+            {appearance}
+          </div>
         </div>
-        <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
-          {perimeter}
-        </div>
-      </div>
 
-      {/* Appearance */}
-      <div className="flex">
-        <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-          Appearance:
-        </div>
-        <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
-          {appearance}
-        </div>
-      </div>
-
-      {/* Rating */}
-      <div className="flex">
-        <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-          Rating:
-        </div>
-        <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
-          {rating}
+        {/* Rating */}
+        <div className="flex">
+          <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
+            Rating:
+          </div>
+          <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
+            {rating}
+          </div>
         </div>
       </div>
     </div>
