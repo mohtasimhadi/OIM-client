@@ -90,75 +90,39 @@ const Dashboard: React.FC = () => {
         <div className="rounded-lg shadow-md p-6 bg-white/10 relative">
           {/* Plant Name Tag on the Top Left */}
           <div className="absolute top-0 left-0 bg-gray-200 text-black px-4 py-2 font-semibold text-xl">
-            Azalea
+            Azalea | Bed: A-12
           </div>
-
-          {/* Bed, Download Button */}
-          <div className="flex justify-between items-center mb-6 pt-10">
-            <div className="px-4 py-2 bg-gray-300 rounded-lg font-semibold text-3xl text-black">
-              Bed: A-12
-            </div>
-            <div className="flex space-x-4">
-              <button className="px-4 py-2 bg-blue-500 rounded-lg transition hover:bg-blue-700">
-                Download XLSX
-              </button>
-            </div>
-          </div>
+          <button className="absolute top-0 right-0 px-4 py-2 bg-blue-500 rounded-bl-lg rounded-tr-lg font-semibold transition hover:bg-blue-700">
+              Download XLSX
+          </button>
+          
 
           {/* Three Columns Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pt-12">
             {/* Left Column - Videos */}
-            <div className="space-y-4">
+            <div className="space-y-4 items-center justify-center">
               <VideoCard title="Original Video" videoSrc="/path/to/original-video.mp4" />
               <VideoCard title="Annotated Video" videoSrc="/path/to/annotated-video.mp4" />
             </div>
 
             {/* Middle Column - Quality Chart, Total Plants, and Above Threshold */}
-            <div className="space-y-4 flex flex-col items-center">
+            <div className="space-y-4 flex flex-col items-center justify-center">
               {/* Quality Chart */}
               <CircularProgress value={30 / 50} label="Quality Above Threshold" size="large" />
-
-              {/* Total Plants and Above Threshold */}
-              {[
-                { label: 'Total Plants', value: 50 },
-                { label: 'Above Threshold', value: 30 },
-              ].map((item, index) => (
-                <div key={index} className="flex w-full">
-                  <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-                    {item.label}:
-                  </div>
-                  <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
-                    {item.value}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Right Column - Average Circularity, Eccentricity, Perimeter, Area, Collection Date, and GPS Location */}
-            <div className="space-y-4">
-              {/* Average Circularity and Eccentricity */}
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 items-center justify-around">
                 <CircularProgress value={0.85} label="Average Circularity" size="small" />
                 <CircularProgress value={0.45} label="Average Eccentricity" size="small" />
               </div>
+            </div>
 
-              {/* Average Perimeter and Average Area */}
-              {[
-                { label: 'Average Perimeter', value: '25.6 cm' },
-                { label: 'Average Area', value: '15.4 cm²' },
-              ].map((item, index) => (
-                <div key={index} className="flex">
-                  <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-                    {item.label}:
-                  </div>
-                  <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
-                    {item.value}
-                  </div>
-                </div>
-              ))}
+            {/* Right Column - Average Circularity, Eccentricity, Perimeter, Area, Collection Date, and GPS Location */}
+            <div className="space-y-4 items-center justify-center">
 
               {/* Collection Date and GPS Location */}
-              {[
+              {[{ label: 'Total Plants', value: 50 },
+                { label: 'Above Threshold', value: 30 },
+                { label: 'Average Perimeter', value: '25.6 cm' },
+                { label: 'Average Area', value: '15.4 cm²' },
                 { label: 'Collection Date', value: '2024-10-03' },
                 { label: 'GPS Location', value: '40.12°N, 111.12°W' },
               ].map((item, index) => (
