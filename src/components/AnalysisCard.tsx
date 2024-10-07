@@ -16,7 +16,6 @@ const AnalysisCard: React.FC<AnalysisCardProps> = ({ videoId, bedNumber, collect
     >
       <h3 className="text-lg font-semibold mb-2">Bed: {bedNumber}</h3>
       <p className="mb-1">Collection Date: {collectionDate}</p>
-      <p className="text-sm text-gray-400">Video ID: {videoId}</p>
     </div>
   );
 };

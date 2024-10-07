@@ -152,83 +152,105 @@ const Dashboard: React.FC = () => {
 
               {/* Dashboard content */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pt-12">
-                {/* Video Cards Section */}
-                <div className="space-y-4 items-center justify-center">
-                  <VideoCard
-                    title="Original Video"
-                    videoSrc={`http://localhost:8000/video/view/${analysisData.video_id}`}
-                  />
-                  <VideoCard
-                    title="Annotated Video"
-                    videoSrc={`http://localhost:8000/video/view/${analysisData.analysis.video_id}`}
-                  />
-                </div>
+                {/* Left Column (1/3 Size) */}
+                <div className="col-span-1 space-y-4">
+                  {/* Circular Progress Section */}
+                  <div className="flex flex-col space-y-4 items-center justify-center">
+                    <div className="flex items-center space-x-4 justify-around">
+                      <CircularProgress
+                        value={
+                          plants.length > 0
+                            ? analysisData.analysis.above_threshold / plants.length
+                            : 0
+                        }
+                        label="Quality Above Threshold"
+                        size="large"
+                      />
+                      <CircularProgress
+                        value={getAverageValue(plants, 'circularity')}
+                        label="Average Circularity"
+                        size="large"
+                      />
+                      <CircularProgress
+                        value={getAverageValue(plants, 'eccentricity')}
+                        label="Average Eccentricity"
+                        size="large"
+                      />
+                    </div>
 
-                {/* Circular Progress Section */}
-                <div className="space-y-4 flex flex-col items-center justify-center">
-                  <CircularProgress
-                    value={
-                      plants.length > 0
-                        ? analysisData.analysis.above_threshold / plants.length
-                        : 0
+                    {/* Additional Information */}
+
+                    {
+                      [
+                        {
+                          label: 'Total Plants',
+                          value: plants.length,
+                        },
+                        {
+                          label: 'Above Threshold',
+                          value: analysisData.analysis.above_threshold,
+                        },
+                        {
+                          label: 'Average Perimeter',
+                          value: getAverageValue(plants, 'perimeter'),
+                        },
+                        {
+                          label: 'Average Area',
+                          value: getAverageValue(plants, 'area'),
+                        },
+                        {
+                          label: 'Collection Date',
+                          value: analysisData.collection_date,
+                        },
+                        {
+                          label: 'GPS Location',
+                          value: 'N/A', // Replace with actual GPS data if available
+                        },
+                      ].reduce<{ label: string; value: string | number }[][]>((result, value, index, array) => {
+                        if (index % 2 === 0) {
+                          result.push(array.slice(index, index + 2));
+                        }
+                        return result;
+                      }, []).map((pair, rowIndex) => (
+                        <div key={rowIndex} className="flex w-full mb-2">
+                          {pair.map((item, colIndex) => (
+                            <div key={colIndex} className="flex w-1/2 pr-2">
+                              <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
+                                {item.label}:
+                              </div>
+                              <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2 flex items-center overflow-hidden">
+                                {item.value}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ))
                     }
-                    label="Quality Above Threshold"
-                    size="large"
-                  />
-                  <div className="flex items-center space-x-4 justify-around">
-                    <CircularProgress
-                      value={getAverageValue(plants, 'circularity')}
-                      label="Average Circularity"
-                      size="small"
-                    />
-                    <CircularProgress
-                      value={getAverageValue(plants, 'eccentricity')}
-                      label="Average Eccentricity"
-                      size="small"
-                    />
+
+
+
+
+
                   </div>
                 </div>
 
-                {/* Statistics Section */}
-                <div className="space-y-4 items-center justify-center">
-                  {[
-                    {
-                      label: 'Total Plants',
-                      value: plants.length,
-                    },
-                    {
-                      label: 'Above Threshold',
-                      value: analysisData.analysis.above_threshold,
-                    },
-                    {
-                      label: 'Average Perimeter',
-                      value: getAverageValue(plants, 'perimeter'),
-                    },
-                    {
-                      label: 'Average Area',
-                      value: getAverageValue(plants, 'area'),
-                    },
-                    {
-                      label: 'Collection Date',
-                      value: analysisData.collection_date,
-                    },
-                    {
-                      label: 'GPS Location',
-                      value: 'N/A', // Replace with actual GPS data if available
-                    },
-                  ].map((item, index) => (
-                    <div key={index} className="flex w-full">
-                      <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-                        {item.label}:
-                      </div>
-                      <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
-                        {item.value}
-                      </div>
-                    </div>
-                  ))}
+                {/* Right Column (2/3 Size) */}
+                <div className="col-span-2 space-y-4 flex flex-col items-center justify-center">
+                  {/* Video Cards Section */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                    <VideoCard
+                      title="Original Video"
+                      videoSrc={`http://localhost:8000/video/view/${analysisData.video_id}`}
+                    />
+                    <VideoCard
+                      title="Annotated Video"
+                      videoSrc={`http://localhost:8000/video/view/${analysisData.analysis.video_id}`}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
+
 
             {/* Filter Section */}
             <Filters
