@@ -153,7 +153,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Only display the dashboard after analysis data is fetched */}
-        {analysisData && analysisData.analysis ? (
+        {analysisData && analysisData.analysis && analysisData.video_id ? (
           <>
             {/* Large Information Card */}
             <div className="rounded-lg shadow-md p-6 bg-white/10 relative">
@@ -199,10 +199,12 @@ const Dashboard: React.FC = () => {
                   {/* Video Cards Section */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                     <VideoCard
+                      key={`${analysisData.video_id}`}
                       title="Original Video"
                       videoID={analysisData.video_id}
                     />
                     <VideoCard
+                      key={`${analysisData.analysis.video_id}`}
                       title="Annotated Video"
                       videoID={analysisData.analysis.video_id}
                     />
