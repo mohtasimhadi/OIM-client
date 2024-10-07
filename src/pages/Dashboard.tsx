@@ -191,6 +191,75 @@ const Dashboard: React.FC = () => {
                         size="large"
                       />
                     </div>
+                    {[
+                      {
+                        label: 'Total Plants',
+                        value: plants.length,
+                      },
+                      {
+                        label: 'Above Threshold',
+                        value: analysisData.analysis.above_threshold,
+                      },
+                      {
+                        label: 'Average Perimeter',
+                        value: getAverageValue(plants, 'perimeter'),
+                      },
+                      {
+                        label: 'Average Area',
+                        value: getAverageValue(plants, 'area'),
+                      },
+                      {
+                        label: 'Collection Date',
+                        value: analysisData.collection_date,
+                      },
+                      {
+                        label: 'GPS Location',
+                        value: 'N/A', // Replace with actual GPS data if available
+                      },
+                    ]
+                      .reduce<{ label: string; value: string | number }[][]>(
+                        (result, value, index, array) => {
+                          if (index % 2 === 0) {
+                            result.push(array.slice(index, index + 2));
+                          }
+                          return result;
+                        },
+                        []
+                      )
+                      .map((pair, rowIndex) => (
+                        <div key={rowIndex} className="flex w-full mb-2">
+                          {pair.map((item, colIndex) => (
+                            <div key={colIndex} className="flex w-1/2 pr-2">
+                              <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
+                                {item.label}:
+                              </div>
+                              <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2 flex items-center overflow-hidden">
+                                {item.value}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                   </div>
                 </div>
 
