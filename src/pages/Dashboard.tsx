@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import VideoCard from '../components/VideoCard';
 import PlantDetailCard from '../components/PlantDetailCard';
 import CircularProgress from '../components/CircularProgress';
 import Filters from '../components/Filters';
+import AnalysisCard from '../components/AnalysisCard'; // Create this component to display the analysis overview
 
 interface Plant {
   id: string;
@@ -14,6 +15,12 @@ interface Plant {
   confidenceThreshold: number;
   appearance: string;
   rating: string;
+}
+
+interface Summary {
+  video_id: string;
+  bed_number: string;
+  collection_date: string;
 }
 
 const Dashboard: React.FC = () => {
@@ -44,6 +51,17 @@ const Dashboard: React.FC = () => {
     confidenceThresholdMin?: number;
     confidenceThresholdMax?: number;
   }>({});
+
+  // State to store the summaries from the API
+  const [summaries, setSummaries] = useState<Summary[]>([]);
+
+  // Fetch summaries from the API
+  useEffect(() => {
+    fetch('http://localhost:8080/data/summaries')
+      .then((response) => response.json())
+      .then((data) => setSummaries(data))
+      .catch((error) => console.error('Error fetching summaries:', error));
+  }, []);
 
   // Handle filter input change for text and dropdowns
   const handleFilterChange = (
@@ -96,7 +114,6 @@ const Dashboard: React.FC = () => {
               Download XLSX
           </button>
           
-
           {/* Three Columns Layout */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pt-12">
             {/* Left Column - Videos */}
@@ -117,8 +134,6 @@ const Dashboard: React.FC = () => {
 
             {/* Right Column - Average Circularity, Eccentricity, Perimeter, Area, Collection Date, and GPS Location */}
             <div className="space-y-4 items-center justify-center">
-
-              {/* Collection Date and GPS Location */}
               {[{ label: 'Total Plants', value: 50 },
                 { label: 'Above Threshold', value: 30 },
                 { label: 'Average Perimeter', value: '25.6 cm' },
@@ -137,6 +152,18 @@ const Dashboard: React.FC = () => {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Analysis Overview Cards */}
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {summaries.map((summary) => (
+            <AnalysisCard
+              key={summary.video_id}
+              videoId={summary.video_id}
+              bedNumber={summary.bed_number}
+              collectionDate={summary.collection_date}
+            />
+          ))}
         </div>
 
         {/* Filter Section */}
