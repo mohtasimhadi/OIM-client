@@ -1,3 +1,5 @@
+// pages/Dashboard.tsx
+
 import React, { useState, useEffect } from 'react';
 import VideoCard from '../components/VideoCard';
 import PlantDetailCard from '../components/PlantDetailCard';
@@ -72,21 +74,25 @@ const Dashboard: React.FC = () => {
     getSummaries();
   }, []);
 
+  // Fetch analysis data when `selectedAnalysis` changes
+  useEffect(() => {
+    if (selectedAnalysis) {
+      const getAnalysisData = async () => {
+        try {
+          const data = await fetchAnalysisData(selectedAnalysis.video_id);
+          setAnalysisData(data);
+        } catch (error) {
+          console.error('Error fetching analysis data:', error);
+        }
+      };
+
+      getAnalysisData();
+    }
+  }, [selectedAnalysis]);
+
   // Handler for clicking on an AnalysisCard
   const handleAnalysisClick = (summary: Summary) => {
-    setSelectedAnalysis(summary); // Set the selected analysis
-
-    // Fetch additional data from the constructed API
-    const getAnalysisData = async () => {
-      try {
-        const data = await fetchAnalysisData(summary.video_id);
-        setAnalysisData(data);
-      } catch (error) {
-        console.error('Error fetching analysis data:', error);
-      }
-    };
-
-    getAnalysisData();
+    setSelectedAnalysis(summary);
   };
 
   // Handler for filter input changes
@@ -120,13 +126,13 @@ const Dashboard: React.FC = () => {
       (!filters.rating || plant.rating === filters.rating) &&
       (!filters.circularityMin ||
         (plant.circularity >= filters.circularityMin &&
-          plant.circularity <= (filters.circularityMax ?? 1))) &&
+          plant.circularity <= (filters.circularityMax ?? 100))) &&
       (!filters.eccentricityMin ||
         (plant.eccentricity >= filters.eccentricityMin &&
-          plant.eccentricity <= (filters.eccentricityMax ?? 1))) &&
+          plant.eccentricity <= (filters.eccentricityMax ?? 100))) &&
       (!filters.confidenceThresholdMin ||
         (plant.confidence >= filters.confidenceThresholdMin &&
-          plant.confidence <= (filters.confidenceThresholdMax ?? 1)))
+          plant.confidence <= (filters.confidenceThresholdMax ?? 100)))
     );
   });
 
@@ -185,57 +191,6 @@ const Dashboard: React.FC = () => {
                         size="large"
                       />
                     </div>
-
-                    {/* Additional Information */}
-                    {[
-                      {
-                        label: 'Total Plants',
-                        value: plants.length,
-                      },
-                      {
-                        label: 'Above Threshold',
-                        value: analysisData.analysis.above_threshold,
-                      },
-                      {
-                        label: 'Average Perimeter',
-                        value: getAverageValue(plants, 'perimeter'),
-                      },
-                      {
-                        label: 'Average Area',
-                        value: getAverageValue(plants, 'area'),
-                      },
-                      {
-                        label: 'Collection Date',
-                        value: analysisData.collection_date,
-                      },
-                      {
-                        label: 'GPS Location',
-                        value: 'N/A', // Replace with actual GPS data if available
-                      },
-                    ]
-                      .reduce<{ label: string; value: string | number }[][]>(
-                        (result, value, index, array) => {
-                          if (index % 2 === 0) {
-                            result.push(array.slice(index, index + 2));
-                          }
-                          return result;
-                        },
-                        []
-                      )
-                      .map((pair, rowIndex) => (
-                        <div key={rowIndex} className="flex w-full mb-2">
-                          {pair.map((item, colIndex) => (
-                            <div key={colIndex} className="flex w-1/2 pr-2">
-                              <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-                                {item.label}:
-                              </div>
-                              <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2 flex items-center overflow-hidden">
-                                {item.value}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ))}
                   </div>
                 </div>
 
@@ -245,11 +200,11 @@ const Dashboard: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                     <VideoCard
                       title="Original Video"
-                      videoSrc={`http://10.33.9.30:8000/video/view/${analysisData.video_id}`}
+                      videoID={analysisData.video_id}
                     />
                     <VideoCard
                       title="Annotated Video"
-                      videoSrc={`http://10.33.9.30:8000/video/view/${analysisData.analysis.video_id}`}
+                      videoID={analysisData.analysis.video_id}
                     />
                   </div>
                 </div>
