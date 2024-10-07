@@ -1,13 +1,13 @@
 import React from 'react';
 
 interface PlantDetailCardProps {
-  id: string;
+  track_id: string;
   image: string;
   circularity: number;
   eccentricity: number;
   area: string;
   perimeter: string;
-  confidenceThreshold: number;
+  confidence: number;
   appearance: string;
   rating: string;
 }
@@ -55,13 +55,13 @@ const CircularProgress: React.FC<{
 );
 
 const PlantDetailCard: React.FC<PlantDetailCardProps> = ({
-  id,
+  track_id: id,
   image,
   circularity,
   eccentricity,
   area,
   perimeter,
-  confidenceThreshold,
+  confidence,
   appearance,
   rating,
 }) => (
@@ -72,63 +72,41 @@ const PlantDetailCard: React.FC<PlantDetailCardProps> = ({
     </div>
 
     {/* Left Column - Plant Image */}
-    <div className="w-1/3">
-      <img src={image} alt="Plant" className="w-full h-full rounded-md shadow-sm" />
+    <div className="w-1/3 h-35">
+      <img src={`http://localhost:8000/image/view/${image}`} alt="Plant" className="w-full aspect-square rounded-md shadow-sm" />
     </div>
 
     {/* Right Column - Details */}
-    <div className="w-2/3 flex flex-col space-y-4 pl-6">
+    <div className="w-2/3 flex flex-col space-y-4 pl-6 items-center justify-center">
       {/* First Row - Circularity, Eccentricity, Confidence Threshold */}
       <div className="flex items-center justify-around space-x-4">
         <CircularProgress value={circularity} label="Circularity" />
         <CircularProgress value={eccentricity} label="Eccentricity" />
-        <CircularProgress value={confidenceThreshold} label="Confidence Threshold" />
+        <CircularProgress value={confidence} label="Confidence Threshold" />
       </div>
 
       {/* Second Row - Area and Perimeter */}
-      <div className="grid grid-cols-2 gap-4">
-        {/* Area */}
-        <div className="flex">
-          <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-            Area:
-          </div>
-          <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
-            {area}
-          </div>
-        </div>
 
-        {/* Perimeter */}
-        <div className="flex">
-          <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-            Perimeter:
-          </div>
-          <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
-            {perimeter}
-          </div>
+
+      {/* Area */}
+      <div className="flex w-full">
+        <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
+          Area:
+        </div>
+        <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
+          {area}
         </div>
       </div>
 
-      {/* Third Row - Appearance and Rating */}
-      <div className="grid grid-cols-2 gap-4">
-        {/* Appearance */}
-        <div className="flex">
-          <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-            Appearance:
-          </div>
-          <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
-            {appearance}
-          </div>
+      {/* Perimeter */}
+      <div className="flex w-full">
+        <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
+          Perimeter:
+        </div>
+        <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
+          {perimeter}
         </div>
 
-        {/* Rating */}
-        <div className="flex">
-          <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-            Rating:
-          </div>
-          <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
-            {rating}
-          </div>
-        </div>
       </div>
     </div>
   </div>
