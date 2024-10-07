@@ -23,7 +23,7 @@ const Filters: React.FC<FilterProps> = ({ filters, handleFilterChange, handleRan
       {/* Dropdown for Appearance */}
       <select
         name="appearance"
-        className="p-2 rounded-md"
+        className="p-2 rounded-md text-black"
         value={filters.appearance || ''}
         onChange={handleFilterChange}
       >
@@ -35,7 +35,7 @@ const Filters: React.FC<FilterProps> = ({ filters, handleFilterChange, handleRan
       {/* Dropdown for Rating */}
       <select
         name="rating"
-        className="p-2 rounded-md"
+        className="p-2 rounded-md text-black"
         value={filters.rating || ''}
         onChange={handleFilterChange}
       >
@@ -62,7 +62,7 @@ const Filters: React.FC<FilterProps> = ({ filters, handleFilterChange, handleRan
               onChange={(e) =>
                 handleRangeChange(item.name, Number(e.target.value), filters[`${item.name}Max`] || item.max)
               }
-              className="w-20 p-2 rounded-md"
+              className="w-20 p-2 rounded-md text-black"
             />
             <input
               type="range"
@@ -74,7 +74,7 @@ const Filters: React.FC<FilterProps> = ({ filters, handleFilterChange, handleRan
               onChange={(e) =>
                 handleRangeChange(item.name, Number(e.target.value), filters[`${item.name}Max`] || item.max)
               }
-              className="flex-1"
+              className="flex-1 text-black"
             />
             <input
               type="range"
@@ -86,7 +86,7 @@ const Filters: React.FC<FilterProps> = ({ filters, handleFilterChange, handleRan
               onChange={(e) =>
                 handleRangeChange(item.name, filters[`${item.name}Min`] || item.min, Number(e.target.value))
               }
-              className="flex-1"
+              className="flex-1 text-black"
             />
             <input
               type="number"
@@ -96,7 +96,7 @@ const Filters: React.FC<FilterProps> = ({ filters, handleFilterChange, handleRan
               onChange={(e) =>
                 handleRangeChange(item.name, filters[`${item.name}Min`] || item.min, Number(e.target.value))
               }
-              className="w-20 p-2 rounded-md"
+              className="w-20 p-2 rounded-md text-black"
             />
           </div>
         </div>
