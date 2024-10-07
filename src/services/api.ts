@@ -16,7 +16,7 @@ export const uploadVideos = async (videoInfo: {
     });
   
     try {
-      const response = await fetch('http://localhost:8080/upload/', {
+      const response = await fetch('http://10.33.9.30:8080/upload/', {
         method: 'POST',
         body: formData,
       });
@@ -35,7 +35,7 @@ export const uploadVideos = async (videoInfo: {
   
 export const fetchSummaries = async () => {
   try {
-    const response = await fetch('http://localhost:8080/data/summaries');
+    const response = await fetch('http://10.33.9.30:8080/data/summaries');
     if (!response.ok) {
       throw new Error('Error fetching summaries');
     }
@@ -49,7 +49,7 @@ export const fetchSummaries = async () => {
 
 export const fetchAnalysisData = async (videoId: string) => {
   try {
-    const apiUrl = `http://localhost:8080/data/${encodeURIComponent(videoId)}`;
+    const apiUrl = `http://10.33.9.30:8080/data/${encodeURIComponent(videoId)}`;
     const response = await fetch(apiUrl);
     if (!response.ok) {
       throw new Error('Error fetching analysis data');

@@ -245,11 +245,11 @@ const Dashboard: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                     <VideoCard
                       title="Original Video"
-                      videoSrc={`http://localhost:8000/video/view/${analysisData.video_id}`}
+                      videoSrc={`http://10.33.9.30:8000/video/view/${analysisData.video_id}`}
                     />
                     <VideoCard
                       title="Annotated Video"
-                      videoSrc={`http://localhost:8000/video/view/${analysisData.analysis.video_id}`}
+                      videoSrc={`http://10.33.9.30:8000/video/view/${analysisData.analysis.video_id}`}
                     />
                   </div>
                 </div>

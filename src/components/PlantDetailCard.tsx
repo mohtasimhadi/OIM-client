@@ -73,7 +73,7 @@ const PlantDetailCard: React.FC<PlantDetailCardProps> = ({
 
     {/* Left Column - Plant Image */}
     <div className="w-1/3 h-35">
-      <img src={`http://localhost:8000/image/view/${image}`} alt="Plant" className="w-full aspect-square rounded-md shadow-sm" />
+      <img src={`http://10.33.9.30:8000/image/view/${image}`} alt="Plant" className="w-full aspect-square rounded-md shadow-sm" />
     </div>
 
     {/* Right Column - Details */}
