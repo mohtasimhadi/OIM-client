@@ -33,3 +33,31 @@ export const uploadVideos = async (videoInfo: {
     }
   };
   
+export const fetchSummaries = async () => {
+  try {
+    const response = await fetch('http://localhost:8080/data/summaries');
+    if (!response.ok) {
+      throw new Error('Error fetching summaries');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+export const fetchAnalysisData = async (videoId: string) => {
+  try {
+    const apiUrl = `http://localhost:8080/data/${encodeURIComponent(videoId)}`;
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error('Error fetching analysis data');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};

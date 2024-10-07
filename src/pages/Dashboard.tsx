@@ -5,6 +5,7 @@ import CircularProgress from '../components/CircularProgress';
 import Filters from '../components/Filters';
 import AnalysisCard from '../components/AnalysisCard';
 import { getAverageValue } from '../services/calculations';
+import { fetchSummaries, fetchAnalysisData } from '../services/api';
 
 interface Plant {
   track_id: string;
@@ -59,26 +60,33 @@ const Dashboard: React.FC = () => {
 
   // Fetch summaries on component mount
   useEffect(() => {
-    fetch('http://localhost:8080/data/summaries')
-      .then((response) => response.json())
-      .then((data) => setSummaries(data))
-      .catch((error) => console.error('Error fetching summaries:', error));
+    const getSummaries = async () => {
+      try {
+        const data = await fetchSummaries();
+        setSummaries(data);
+      } catch (error) {
+        console.error('Error fetching summaries:', error);
+      }
+    };
+
+    getSummaries();
   }, []);
 
   // Handler for clicking on an AnalysisCard
   const handleAnalysisClick = (summary: Summary) => {
     setSelectedAnalysis(summary); // Set the selected analysis
 
-    // Construct the API URL using the video_id from the summary
-    const apiUrl = `http://localhost:8080/data/${encodeURIComponent(summary.video_id)}`;
-
     // Fetch additional data from the constructed API
-    fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        setAnalysisData(data); // Update with fetched data
-      })
-      .catch((error) => console.error('Error fetching analysis data:', error));
+    const getAnalysisData = async () => {
+      try {
+        const data = await fetchAnalysisData(summary.video_id);
+        setAnalysisData(data);
+      } catch (error) {
+        console.error('Error fetching analysis data:', error);
+      }
+    };
+
+    getAnalysisData();
   };
 
   // Handler for filter input changes
@@ -179,39 +187,42 @@ const Dashboard: React.FC = () => {
                     </div>
 
                     {/* Additional Information */}
-
-                    {
-                      [
-                        {
-                          label: 'Total Plants',
-                          value: plants.length,
+                    {[
+                      {
+                        label: 'Total Plants',
+                        value: plants.length,
+                      },
+                      {
+                        label: 'Above Threshold',
+                        value: analysisData.analysis.above_threshold,
+                      },
+                      {
+                        label: 'Average Perimeter',
+                        value: getAverageValue(plants, 'perimeter'),
+                      },
+                      {
+                        label: 'Average Area',
+                        value: getAverageValue(plants, 'area'),
+                      },
+                      {
+                        label: 'Collection Date',
+                        value: analysisData.collection_date,
+                      },
+                      {
+                        label: 'GPS Location',
+                        value: 'N/A', // Replace with actual GPS data if available
+                      },
+                    ]
+                      .reduce<{ label: string; value: string | number }[][]>(
+                        (result, value, index, array) => {
+                          if (index % 2 === 0) {
+                            result.push(array.slice(index, index + 2));
+                          }
+                          return result;
                         },
-                        {
-                          label: 'Above Threshold',
-                          value: analysisData.analysis.above_threshold,
-                        },
-                        {
-                          label: 'Average Perimeter',
-                          value: getAverageValue(plants, 'perimeter'),
-                        },
-                        {
-                          label: 'Average Area',
-                          value: getAverageValue(plants, 'area'),
-                        },
-                        {
-                          label: 'Collection Date',
-                          value: analysisData.collection_date,
-                        },
-                        {
-                          label: 'GPS Location',
-                          value: 'N/A', // Replace with actual GPS data if available
-                        },
-                      ].reduce<{ label: string; value: string | number }[][]>((result, value, index, array) => {
-                        if (index % 2 === 0) {
-                          result.push(array.slice(index, index + 2));
-                        }
-                        return result;
-                      }, []).map((pair, rowIndex) => (
+                        []
+                      )
+                      .map((pair, rowIndex) => (
                         <div key={rowIndex} className="flex w-full mb-2">
                           {pair.map((item, colIndex) => (
                             <div key={colIndex} className="flex w-1/2 pr-2">
@@ -224,13 +235,7 @@ const Dashboard: React.FC = () => {
                             </div>
                           ))}
                         </div>
-                      ))
-                    }
-
-
-
-
-
+                      ))}
                   </div>
                 </div>
 
@@ -250,7 +255,6 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
             </div>
-
 
             {/* Filter Section */}
             <Filters
