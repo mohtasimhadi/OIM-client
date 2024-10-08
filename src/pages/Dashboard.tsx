@@ -10,7 +10,9 @@ import { Plant, Summary, AnalysisData } from '../types';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { PiPottedPlantBold } from "react-icons/pi";
 import { SiGooglesheets, SiNamecheap } from "react-icons/si";
-import ReactPlayer from 'react-player'; // Import ReactPlayer
+import { FaPlay } from "react-icons/fa";
+import { FaPause, FaStop } from 'react-icons/fa6';
+import ReactPlayer from 'react-player';
 
 interface DashboardProps {
   searchTerm: string;
@@ -106,12 +108,9 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
   };
 
   // Play/Pause/Stop video controls
-  const playVideos = () => {
-    setPlaying(true);
-  };
 
-  const pauseVideos = () => {
-    setPlaying(false);
+  const togglePlayPause = () => {
+    setPlaying(!playing); // Toggles between play and pause
   };
 
   const stopVideos = () => {
@@ -211,7 +210,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
           <>
             <div className="rounded-lg shadow-md p-6 bg-white/10 relative">
               <div className="flex items-center absolute top-0 left-0 bg-gray-200 text-black px-4 py-2 font-semibold text-xl rounded-tl-lg rounded-br-lg">
-                <PiPottedPlantBold className='mr-2'/> Azalea
+                <PiPottedPlantBold className='mr-2' /> Azalea
               </div>
               <button className="flex items-center absolute top-0 right-0 px-4 py-2 bg-blue-500 rounded-bl-lg rounded-tr-lg font-semibold transition hover:bg-blue-700">
                 <SiGooglesheets className='mr-2' /> Download XLSX
@@ -237,12 +236,41 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                         size="large"
                       />
                     </div>
+                    {[{ label: 'Total Plants', value: plants.length },
+                    { label: 'Above Threshold', value: analysisData.analysis.above_threshold },
+                    { label: 'Mean Perimeter', value: getAverageValue(plants, 'perimeter') },
+                    { label: 'Mean Area', value: getAverageValue(plants, 'area') },
+                    { label: 'Collection Date', value: analysisData.collection_date },
+                    { label: 'GPS Location', value: 'N/A' }]
+                      .reduce<{ label: string; value: string | number }[][]>(
+                        (result, value, index, array) => {
+                          if (index % 2 === 0) {
+                            result.push(array.slice(index, index + 2));
+                          }
+                          return result;
+                        },
+                        []
+                      )
+                      .map((pair, rowIndex) => (
+                        <div key={rowIndex} className="flex w-full mb-2">
+                          {pair.map((item, colIndex) => (
+                            <div key={colIndex} className="flex w-1/2 pr-2">
+                              <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
+                                {item.label}:
+                              </div>
+                              <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2 flex items-center overflow-hidden">
+                                {item.value}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ))}
                   </div>
                 </div>
 
                 <div className="col-span-2 space-y-4 flex flex-col items-center justify-around">
                   <div className="flex items-center justify-center w-full bg-white/15 px-4 py-2 font-semibold text-3xl text-center rounded-lg">
-                    <SiNamecheap className='mr-2'/> {selectedAnalysis?.bed_number}
+                    <SiNamecheap className='mr-2' /> {selectedAnalysis?.bed_number}
                   </div>
 
                   {/* Video Controls */}
@@ -264,24 +292,30 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                       onProgress={handleProgress}
                     />
                   </div>
+                  <div className="flex w-full items-center justify-center space-x-4 my-2">
+                      <div className="flex items-center justify-center space-x-4 my-2">
+                        <button
+                          onClick={togglePlayPause}
+                          className={`px-4 py-2 rounded-full bg-white/15 text-white`}>
+                          {playing ? <FaPause /> : <FaPlay />}
+                        </button>
+                        <button onClick={stopVideos} className="px-4 py-2 rounded-full bg-white/15 text-white"><FaStop /></button>
+                      </div>
 
-                  {/* Play, Pause, Stop Buttons */}
-                  <div className="flex justify-center space-x-4 my-2">
-                    <button onClick={playVideos} className="px-4 py-2 bg-blue-500 text-white rounded">Play</button>
-                    <button onClick={pauseVideos} className="px-4 py-2 bg-yellow-500 text-white rounded">Pause</button>
-                    <button onClick={stopVideos} className="px-4 py-2 bg-red-500 text-white rounded">Stop</button>
-                  </div>
+                      <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value={progress}
+                      onChange={handleSeek}
+                      className="w-full h-2 bg-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    </div>
 
-                  {/* Shared Progress Bar */}
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={progress}
-                    onChange={handleSeek}
-                    className="w-full"
-                  />
+
+
+
                 </div>
               </div>
             </div>
