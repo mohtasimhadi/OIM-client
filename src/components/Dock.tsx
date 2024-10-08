@@ -1,7 +1,9 @@
 import React from "react";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import UserMenu from "./UserMenu";
 import { DockProps } from "../types";
+import { IoCloudUpload } from "react-icons/io5";
+import { MdOutlineDashboard } from "react-icons/md";
+import { FaMapLocationDot } from "react-icons/fa6";
 
 const Dock: React.FC<DockProps> = ({
   darkMode,
@@ -50,8 +52,8 @@ const Dock: React.FC<DockProps> = ({
           } font-bold`}
           onClick={() => setCurrentPage("dashboard")}
         >
-          <i className="fas fa-tachometer-alt"></i>
-          <span>Dashboard</span>
+          
+          <span className="flex items-center" ><MdOutlineDashboard className="mr-2"/> Dashboard</span>
         </button>
 
         <button
@@ -64,8 +66,7 @@ const Dock: React.FC<DockProps> = ({
           } font-bold`}
           onClick={() => setCurrentPage("map")}
         >
-          <i className="fas fa-map-marker-alt"></i>
-          <span>Map</span>
+          <span className="flex items-center"><FaMapLocationDot className="mr-2"/> Map</span>
         </button>
 
         <button
@@ -78,8 +79,7 @@ const Dock: React.FC<DockProps> = ({
           } font-bold`}
           onClick={() => setCurrentPage("upload")}
         >
-          <i className="fas fa-upload"></i>
-          <span>Upload</span>
+          <span className="flex items-center"><IoCloudUpload className="mr-2"/>Upload</span>
         </button>
 
         <div className="h-6 w-px bg-white mx-4"></div>
