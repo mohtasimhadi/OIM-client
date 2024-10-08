@@ -45,8 +45,8 @@ export interface VideoInfo {
     image: string;
     circularity: number;
     eccentricity: number;
-    area: string;
-    perimeter: string;
+    area: number;
+    perimeter: number;
     confidence: number;
     appearance: string;
     rating: string;
@@ -70,8 +70,8 @@ export interface VideoInfo {
     image: string;
     circularity: number;
     eccentricity: number;
-    area: string;
-    perimeter: string;
+    area: number;
+    perimeter: number;
     confidence: number;
     appearance: string;
     rating: string;

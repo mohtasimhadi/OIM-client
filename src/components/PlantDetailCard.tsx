@@ -84,7 +84,7 @@ const PlantDetailCard: React.FC<PlantDetailCardProps> = ({
           Area:
         </div>
         <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
-          {area}
+          {parseFloat(area.toFixed(2))} pixels^2
         </div>
       </div>
 
@@ -94,7 +94,7 @@ const PlantDetailCard: React.FC<PlantDetailCardProps> = ({
           Perimeter:
         </div>
         <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2">
-          {perimeter}
+          {parseFloat(perimeter.toFixed(2))} pixels
         </div>
 
       </div>
