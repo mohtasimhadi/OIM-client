@@ -1,10 +1,8 @@
 import React from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { QualityChartProps } from '../types';
 
-interface QualityChartProps {
-  value: number;
-}
 
 const QualityChart: React.FC<QualityChartProps> = ({ value }) => {
   const getQuality = (percentage: number): string => {

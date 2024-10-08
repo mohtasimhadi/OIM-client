@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-
-interface UserMenuProps {
-  darkMode: boolean;
-}
+import { UserMenuProps } from '../types';
 
 const UserMenu: React.FC<UserMenuProps> = ({ darkMode }) => {
   const [open, setOpen] = useState<boolean>(false);

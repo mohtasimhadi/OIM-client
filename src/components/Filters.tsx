@@ -1,10 +1,6 @@
 import React from 'react';
+import { FilterProps } from '../types';
 
-interface FilterProps {
-  filters: any;
-  handleFilterChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  handleRangeChange: (name: string, min: number, max: number) => void;
-}
 
 const Filters: React.FC<FilterProps> = ({ filters, handleFilterChange, handleRangeChange }) => (
   <div className="bg-white/10 p-4 rounded-lg shadow-md">

@@ -8,34 +8,7 @@ import Filters from '../components/Filters';
 import AnalysisCard from '../components/AnalysisCard';
 import { getAverageValue } from '../services/calculations';
 import { fetchSummaries, fetchAnalysisData } from '../services/api';
-
-interface Plant {
-  track_id: string;
-  image: string;
-  circularity: number;
-  eccentricity: number;
-  area: string;
-  perimeter: string;
-  confidence: number;
-  appearance: string;
-  rating: string;
-}
-
-interface Summary {
-  video_id: string;
-  bed_number: string;
-  collection_date: string;
-}
-
-interface AnalysisData {
-  video_id: string;
-  analysis: {
-    track_data: Plant[];
-    above_threshold: number;
-    video_id: string;
-  };
-  collection_date: string;
-}
+import { Plant, Summary, AnalysisData } from '../types';
 
 const Dashboard: React.FC = () => {
   // State for filters

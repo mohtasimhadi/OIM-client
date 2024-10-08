@@ -1,10 +1,6 @@
 import React from 'react';
+import { CircularProgressProps } from '../types';
 
-interface CircularProgressProps {
-  value: number;
-  label: string;
-  size?: 'small' | 'large';
-}
 
 const CircularProgress: React.FC<CircularProgressProps> = ({ value, label, size = 'large' }) => {
   const sizeClass = size === 'small' ? 'w-16 h-16' : 'w-24 h-24';

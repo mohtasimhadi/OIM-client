@@ -1,17 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-interface VideoInfo {
-  file: File;
-  bedNumber: string;
-  gpsFile: File | null;
-  collectionDate: string;
-}
-
-interface UploadModalProps {
-  files: File[];
-  onClose: () => void;
-  onSubmit: (videoInfo: VideoInfo[]) => void;
-}
+import { VideoInfo, UploadModalProps } from '../types';
 
 const UploadModal: React.FC<UploadModalProps> = ({ files, onClose, onSubmit }) => {
   const [videoInfoList, setVideoInfoList] = useState<VideoInfo[]>([]);

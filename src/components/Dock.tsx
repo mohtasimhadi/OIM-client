@@ -1,13 +1,8 @@
 import React, { useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import UserMenu from "./UserMenu";
+import { DockProps } from "../types";
 
-interface DockProps {
-  darkMode: boolean;
-  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
-  currentPage: string;
-  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
-}
 
 const Dock: React.FC<DockProps> = ({
   darkMode,

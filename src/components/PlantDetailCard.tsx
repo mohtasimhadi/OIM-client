@@ -1,16 +1,6 @@
 import React from 'react';
+import { PlantDetailCardProps } from '../types';
 
-interface PlantDetailCardProps {
-  track_id: string;
-  image: string;
-  circularity: number;
-  eccentricity: number;
-  area: string;
-  perimeter: string;
-  confidence: number;
-  appearance: string;
-  rating: string;
-}
 
 const CircularProgress: React.FC<{
   value: number;

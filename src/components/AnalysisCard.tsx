@@ -1,11 +1,6 @@
 import React from 'react';
+import { AnalysisCardProps } from '../types';
 
-interface AnalysisCardProps {
-  videoId: string;
-  bedNumber: string;
-  collectionDate: string;
-  onClick: () => void;
-}
 
 const AnalysisCard: React.FC<AnalysisCardProps> = ({ videoId, bedNumber, collectionDate, onClick }) => {
 

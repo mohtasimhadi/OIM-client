@@ -2,11 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { fetchVideo } from '../services/api'; // Import the API function to fetch the video
+import { VideoCardProps } from '../types';
 
-interface VideoCardProps {
-  title: string;
-  videoID: string;
-}
 
 const VideoCard: React.FC<VideoCardProps> = ({ title, videoID: videoSrc }) => {
   const [fetchedVideoSrc, setFetchedVideoSrc] = useState<string | null>(null);
