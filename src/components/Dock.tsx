@@ -16,7 +16,7 @@ const Dock: React.FC<DockProps> = ({
 }) => {
   return (
     <div
-      className={`fixed top-8 left-1/2 transform -translate-x-1/2 w-full max-w-4xl flex items-center bg-opacity-70 bg-[#1a1a1a] text-white p-2 rounded-full shadow-lg backdrop-blur-lg transition-all duration-300 ease-in-out z-50`}
+      className={`fixed top-8 left-1/2 transform -translate-x-1/2 w-7/12 max-w-11/12 flex items-center bg-opacity-70 bg-[#1a1a1a] text-white p-2 rounded-full shadow-lg backdrop-blur-lg transition-all duration-300 ease-in-out z-50`}
     >
       {/* Smooth transition for search bar */}
       <div
