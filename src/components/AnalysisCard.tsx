@@ -1,7 +1,7 @@
 import React from 'react';
 import { AnalysisCardProps } from '../types';
 
-const AnalysisCard: React.FC<AnalysisCardProps> = ({ videoId, bedNumber, collectionDate, onClick }) => {
+const AnalysisCard: React.FC<AnalysisCardProps> = ({ plantName, bedNumber, collectionDate, onClick }) => {
   return (
     <div
       onClick={onClick}
@@ -9,6 +9,7 @@ const AnalysisCard: React.FC<AnalysisCardProps> = ({ videoId, bedNumber, collect
       style={{ minWidth: '300px'}}
     >
       <h3 className="text-lg font-semibold mb-2">Bed: {bedNumber}</h3>
+      <h3 className="text-lg font-semibold mb-2 bg-white text-gray-700 top-0 right-0 absolute p-1">{plantName}</h3>
       <p className="mb-1">Collection Date: {collectionDate}</p>
     </div>
   );

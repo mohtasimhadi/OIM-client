@@ -133,7 +133,7 @@ const Dashboard: React.FC = () => {
             {summaries.map((summary) => (
               <AnalysisCard
                 key={summary.video_id}
-                videoId={summary.video_id}
+                plantName='Azalea'
                 bedNumber={summary.bed_number}
                 collectionDate={summary.collection_date}
                 onClick={() => handleAnalysisClick(summary)}

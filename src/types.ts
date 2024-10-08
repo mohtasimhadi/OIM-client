@@ -12,7 +12,7 @@ export interface VideoInfo {
   }
 
   export interface AnalysisCardProps {
-    videoId: string;
+    plantName: string,
     bedNumber: string;
     collectionDate: string;
     onClick: () => void;
