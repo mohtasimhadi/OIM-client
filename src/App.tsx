@@ -3,6 +3,7 @@ import Dock from './components/Dock';
 import Dashboard from './pages/Dashboard';
 import Map from './pages/Map';
 import Upload from './pages/Upload';
+import RoverDash from "./pages/RoverDash";
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
@@ -27,6 +28,7 @@ const App: React.FC = () => {
         {currentPage === 'dashboard' && <Dashboard searchTerm={searchTerm} />} {/* Pass searchTerm to Dashboard */}
         {currentPage === 'map' && <Map />}
         {currentPage === 'upload' && <Upload />}
+        {currentPage === 'rover' && <RoverDash />}
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const fetchVideo = async (videoID: string) => {
   try {
-    const response = await axios.get(`http://172.19.214.198:8080/view/video/${videoID}`, {
+    const response = await axios.get(`http://10.33.9.30:8080/view/video/${videoID}`, {
       responseType: 'blob',
     });
     if (response.status !== 200) {
@@ -33,7 +33,7 @@ export const uploadVideos = async (videoInfo: {
   });
 
   try {
-    const response = await axios.post('http://172.19.214.198:8080/upload/', formData, {
+    const response = await axios.post('http://10.33.9.30:8080/upload/', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -48,7 +48,7 @@ export const uploadVideos = async (videoInfo: {
 
 export const fetchSummaries = async () => {
   try {
-    const response = await axios.get('http://172.19.214.198:8080/data/summaries');
+    const response = await axios.get('http://10.33.9.30:8080/data/summaries');
     return response.data;
   } catch (error) {
     console.error('Error fetching summaries:', error);
@@ -58,7 +58,7 @@ export const fetchSummaries = async () => {
 
 export const fetchAnalysisData = async (videoId: string) => {
   try {
-    const apiUrl = `http://172.19.214.198:8080/data/${encodeURIComponent(videoId)}`;
+    const apiUrl = `http://10.33.9.30:8080/data/${encodeURIComponent(videoId)}`;
     const response = await axios.get(apiUrl);
     return response.data;
   } catch (error) {

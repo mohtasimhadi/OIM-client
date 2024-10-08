@@ -4,6 +4,7 @@ import { DockProps } from "../types";
 import { IoCloudUpload } from "react-icons/io5";
 import { MdOutlineDashboard } from "react-icons/md";
 import { FaMapLocationDot } from "react-icons/fa6";
+import { GiMarsCuriosity } from "react-icons/gi";
 
 const Dock: React.FC<DockProps> = ({
   darkMode,
@@ -67,6 +68,19 @@ const Dock: React.FC<DockProps> = ({
           onClick={() => setCurrentPage("map")}
         >
           <span className="flex items-center"><FaMapLocationDot className="mr-2"/> Map</span>
+        </button>
+
+        <button
+          className={`text-center flex items-center space-x-2 transition-colors ${
+            currentPage === "rover"
+              ? darkMode
+                ? "text-blue-400"
+                : "text-[#a3b18a]"
+              : ""
+          } font-bold`}
+          onClick={() => setCurrentPage("rover")}
+        >
+          <span className="flex items-center"><GiMarsCuriosity className="mr-2"/> Rover</span>
         </button>
 
         <button
