@@ -8,6 +8,9 @@ import { getAverageValue } from '../services/calculations';
 import { fetchSummaries, fetchAnalysisData } from '../services/api';
 import { Plant, Summary, AnalysisData } from '../types';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { PiPottedPlantBold } from "react-icons/pi";
+import { SiGooglesheets } from "react-icons/si";
+import { SiNamecheap } from "react-icons/si";
 
 interface DashboardProps {
   searchTerm: string;
@@ -171,11 +174,11 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
         {analysisData && analysisData.analysis && analysisData.video_id && selectedAnalysis ? (
           <>
             <div className="rounded-lg shadow-md p-6 bg-white/10 relative">
-              <div className="absolute top-0 left-0 bg-gray-200 text-black px-4 py-2 font-semibold text-xl rounded-tl-lg rounded-br-lg">
-                Azalea
+              <div className="flex items-center absolute top-0 left-0 bg-gray-200 text-black px-4 py-2 font-semibold text-xl rounded-tl-lg rounded-br-lg">
+              <PiPottedPlantBold className='mr-2'/> Azalea
               </div>
-              <button className="absolute top-0 right-0 px-4 py-2 bg-blue-500 rounded-bl-lg rounded-tr-lg font-semibold transition hover:bg-blue-700">
-                Download XLSX
+              <button className="flex items-center absolute top-0 right-0 px-4 py-2 bg-blue-500 rounded-bl-lg rounded-tr-lg font-semibold transition hover:bg-blue-700">
+                <SiGooglesheets className='mr-2' /> Download XLSX
               </button>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pt-12">
@@ -193,19 +196,19 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                       />
                       <CircularProgress
                         value={getAverageValue(plants, 'circularity')}
-                        label="Average Circularity"
+                        label="Mean Circularity"
                         size="large"
                       />
                       <CircularProgress
                         value={getAverageValue(plants, 'eccentricity')}
-                        label="Average Eccentricity"
+                        label="Mean Eccentricity"
                         size="large"
                       />
                     </div>
                     {[{ label: 'Total Plants', value: plants.length },
                       { label: 'Above Threshold', value: analysisData.analysis.above_threshold },
-                      { label: 'Average Perimeter', value: getAverageValue(plants, 'perimeter') },
-                      { label: 'Average Area', value: getAverageValue(plants, 'area') },
+                      { label: 'Mean Perimeter', value: getAverageValue(plants, 'perimeter') },
+                      { label: 'Mean Area', value: getAverageValue(plants, 'area') },
                       { label: 'Collection Date', value: analysisData.collection_date },
                       { label: 'GPS Location', value: 'N/A' }]
                       .reduce<{ label: string; value: string | number }[][]>(
@@ -235,8 +238,8 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                 </div>
 
                 <div className="col-span-2 space-y-4 flex flex-col items-center justify-around">
-                  <div className="w-full bg-white/15 px-4 py-2 font-semibold text-3xl text-center rounded-lg">
-                    Bed: {selectedAnalysis?.bed_number}
+                  <div className="flex items-center  justify-center w-full bg-white/15 px-4 py-2 font-semibold text-3xl text-center rounded-lg">
+                  <SiNamecheap className='mr-2'/> {selectedAnalysis?.bed_number}
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full bg-white/15 rounded-lg p-4">
                     <VideoCard

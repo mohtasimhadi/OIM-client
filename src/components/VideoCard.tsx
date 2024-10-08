@@ -1,9 +1,8 @@
-// components/VideoCard.tsx
-
 import React, { useState, useEffect } from 'react';
+import ReactPlayer from 'react-player'; // Import ReactPlayer
+import { MdVideoLibrary } from "react-icons/md";
 import { fetchVideo } from '../services/api'; // Import the API function to fetch the video
 import { VideoCardProps } from '../types';
-
 
 const VideoCard: React.FC<VideoCardProps> = ({ title, videoID: videoSrc }) => {
   const [fetchedVideoSrc, setFetchedVideoSrc] = useState<string | null>(null);
@@ -23,15 +22,23 @@ const VideoCard: React.FC<VideoCardProps> = ({ title, videoID: videoSrc }) => {
 
   return (
     <div>
-      <p className="mb-2 text-center font-semibold">{title}</p>
       {fetchedVideoSrc ? (
-        <video className="w-full aspect-[3/1.7] rounded-md border-2 border-gray-200" controls>
-          <source src={fetchedVideoSrc} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        <ReactPlayer 
+          url={fetchedVideoSrc} 
+          className="w-full rounded-md border-2 border-gray-200"
+          controls 
+          width="100%" 
+          height="auto"
+        />
       ) : (
-        <p>Loading video...</p>
+        // Placeholder div to maintain the same size as the video player
+        <div className="w-full aspect-[3/1.7] rounded-md border-2 border-gray-200 flex justify-center items-center">
+          <p>Loading video...</p>
+        </div>
       )}
+      <p className="flex items-center mb-2 text-center font-semibold"> 
+        <MdVideoLibrary className="mr-2" /> {title}
+      </p>
     </div>
   );
 };
