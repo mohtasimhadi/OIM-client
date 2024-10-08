@@ -9,8 +9,8 @@ import { fetchSummaries, fetchAnalysisData } from '../services/api';
 import { Plant, Summary, AnalysisData } from '../types';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { PiPottedPlantBold } from "react-icons/pi";
-import { SiGooglesheets } from "react-icons/si";
-import { SiNamecheap } from "react-icons/si";
+import { SiGooglesheets, SiNamecheap } from "react-icons/si";
+import ReactPlayer from 'react-player'; // Import ReactPlayer
 
 interface DashboardProps {
   searchTerm: string;
@@ -33,6 +33,11 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
   const [selectedAnalysis, setSelectedAnalysis] = useState<Summary | null>(null);
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const playerRefOriginal = useRef<ReactPlayer | null>(null); // Original video ref
+  const playerRefAnnotated = useRef<ReactPlayer | null>(null); // Annotated video ref
+  const [playing, setPlaying] = useState(false); // Controls play/pause state
+  const [progress, setProgress] = useState(0); // Tracks progress
 
   useEffect(() => {
     const getSummaries = async () => {
@@ -100,8 +105,39 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
     }
   };
 
+  // Play/Pause/Stop video controls
+  const playVideos = () => {
+    setPlaying(true);
+  };
+
+  const pauseVideos = () => {
+    setPlaying(false);
+  };
+
+  const stopVideos = () => {
+    setPlaying(false);
+    if (playerRefOriginal.current && playerRefAnnotated.current) {
+      playerRefOriginal.current.seekTo(0);
+      playerRefAnnotated.current.seekTo(0);
+      setProgress(0); // Reset progress
+    }
+  };
+
+  const handleProgress = (state: any) => {
+    setProgress(state.played); // Update progress bar
+  };
+
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newProgress = parseFloat(e.target.value);
+    setProgress(newProgress);
+    if (playerRefOriginal.current && playerRefAnnotated.current) {
+      playerRefOriginal.current.seekTo(newProgress); // Sync both videos
+      playerRefAnnotated.current.seekTo(newProgress);
+    }
+  };
+
   const plants: Plant[] = analysisData?.analysis?.track_data ?? [];
-  
+
   const filteredPlants = plants.filter((plant) => {
     return (
       (!filters.id || plant.track_id.includes(filters.id)) &&
@@ -175,7 +211,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
           <>
             <div className="rounded-lg shadow-md p-6 bg-white/10 relative">
               <div className="flex items-center absolute top-0 left-0 bg-gray-200 text-black px-4 py-2 font-semibold text-xl rounded-tl-lg rounded-br-lg">
-              <PiPottedPlantBold className='mr-2'/> Azalea
+                <PiPottedPlantBold className='mr-2'/> Azalea
               </div>
               <button className="flex items-center absolute top-0 right-0 px-4 py-2 bg-blue-500 rounded-bl-lg rounded-tr-lg font-semibold transition hover:bg-blue-700">
                 <SiGooglesheets className='mr-2' /> Download XLSX
@@ -186,11 +222,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                   <div className="flex flex-col space-y-4 items-center justify-center">
                     <div className="flex items-center space-x-4 justify-around">
                       <CircularProgress
-                        value={
-                          plants.length > 0
-                            ? analysisData.analysis.above_threshold / plants.length
-                            : 0
-                        }
+                        value={plants.length > 0 ? analysisData.analysis.above_threshold / plants.length : 0}
                         label="Quality Above Threshold"
                         size="large"
                       />
@@ -205,54 +237,51 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                         size="large"
                       />
                     </div>
-                    {[{ label: 'Total Plants', value: plants.length },
-                      { label: 'Above Threshold', value: analysisData.analysis.above_threshold },
-                      { label: 'Mean Perimeter', value: getAverageValue(plants, 'perimeter') },
-                      { label: 'Mean Area', value: getAverageValue(plants, 'area') },
-                      { label: 'Collection Date', value: analysisData.collection_date },
-                      { label: 'GPS Location', value: 'N/A' }]
-                      .reduce<{ label: string; value: string | number }[][]>(
-                        (result, value, index, array) => {
-                          if (index % 2 === 0) {
-                            result.push(array.slice(index, index + 2));
-                          }
-                          return result;
-                        },
-                        []
-                      )
-                      .map((pair, rowIndex) => (
-                        <div key={rowIndex} className="flex w-full mb-2">
-                          {pair.map((item, colIndex) => (
-                            <div key={colIndex} className="flex w-1/2 pr-2">
-                              <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-                                {item.label}:
-                              </div>
-                              <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2 flex items-center overflow-hidden">
-                                {item.value}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ))}
                   </div>
                 </div>
 
                 <div className="col-span-2 space-y-4 flex flex-col items-center justify-around">
-                  <div className="flex items-center  justify-center w-full bg-white/15 px-4 py-2 font-semibold text-3xl text-center rounded-lg">
-                  <SiNamecheap className='mr-2'/> {selectedAnalysis?.bed_number}
+                  <div className="flex items-center justify-center w-full bg-white/15 px-4 py-2 font-semibold text-3xl text-center rounded-lg">
+                    <SiNamecheap className='mr-2'/> {selectedAnalysis?.bed_number}
                   </div>
+
+                  {/* Video Controls */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full bg-white/15 rounded-lg p-4">
                     <VideoCard
+                      ref={playerRefOriginal}
                       key={`${analysisData.video_id}`}
                       title="Original Video"
                       videoID={analysisData.video_id}
+                      playing={playing}
+                      onProgress={handleProgress}
                     />
                     <VideoCard
+                      ref={playerRefAnnotated}
                       key={`${analysisData.analysis.video_id}`}
                       title="Annotated Video"
                       videoID={analysisData.analysis.video_id}
+                      playing={playing}
+                      onProgress={handleProgress}
                     />
                   </div>
+
+                  {/* Play, Pause, Stop Buttons */}
+                  <div className="flex justify-center space-x-4 my-2">
+                    <button onClick={playVideos} className="px-4 py-2 bg-blue-500 text-white rounded">Play</button>
+                    <button onClick={pauseVideos} className="px-4 py-2 bg-yellow-500 text-white rounded">Pause</button>
+                    <button onClick={stopVideos} className="px-4 py-2 bg-red-500 text-white rounded">Stop</button>
+                  </div>
+
+                  {/* Shared Progress Bar */}
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value={progress}
+                    onChange={handleSeek}
+                    className="w-full"
+                  />
                 </div>
               </div>
             </div>
