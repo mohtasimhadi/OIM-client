@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import UserMenu from "./UserMenu";
 import { DockProps } from "../types";
@@ -8,9 +8,9 @@ const Dock: React.FC<DockProps> = ({
   setDarkMode,
   currentPage,
   setCurrentPage,
+  searchTerm, // Add searchTerm prop
+  setSearchTerm, // Add setSearchTerm prop
 }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-
   return (
     <div
       className={`fixed top-8 left-1/2 transform -translate-x-1/2 w-full max-w-4xl flex items-center bg-opacity-70 bg-[#1a1a1a] text-white p-2 rounded-full shadow-lg backdrop-blur-lg transition-all duration-300 ease-in-out z-50`}
@@ -18,9 +18,9 @@ const Dock: React.FC<DockProps> = ({
       <div className="flex items-center w-1/3 relative pl-3">
         <input
           type="text"
-          placeholder="Search bed..."
+          placeholder="Search bed or plant..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm
           className={`p-2 pl-10 rounded-full w-full bg-white/20 text-white placeholder-gray-400 outline-none transition-colors duration-200 ease-in-out`}
         />
         <i className="fas fa-search absolute left-6 text-gray-400"></i>
@@ -87,7 +87,6 @@ const Dock: React.FC<DockProps> = ({
           <span className="text-xs">
             {darkMode ? "Dark Mode" : "Light Mode"}
           </span>
-          {/* User Menu */}
           <UserMenu darkMode={darkMode} />
         </div>
       </div>

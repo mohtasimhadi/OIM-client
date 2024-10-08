@@ -9,8 +9,11 @@ import { fetchSummaries, fetchAnalysisData } from '../services/api';
 import { Plant, Summary, AnalysisData } from '../types';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
+interface DashboardProps {
+  searchTerm: string;
+}
 
-const Dashboard: React.FC = () => {
+const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
   const [filters, setFilters] = useState<{
     id?: string;
     appearance?: string;
@@ -95,6 +98,7 @@ const Dashboard: React.FC = () => {
   };
 
   const plants: Plant[] = analysisData?.analysis?.track_data ?? [];
+  
   const filteredPlants = plants.filter((plant) => {
     return (
       (!filters.id || plant.track_id.includes(filters.id)) &&
@@ -112,6 +116,15 @@ const Dashboard: React.FC = () => {
     );
   });
 
+  // Filter summaries based on search term for plant name and bed number
+  const filteredSummaries = summaries.filter((summary) => {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    return (
+      summary.bed_number.toLowerCase().includes(lowerCaseSearchTerm) ||
+      'Azalea'.toLowerCase().includes(lowerCaseSearchTerm) // Replace 'Azalea' with dynamic plant name if needed
+    );
+  });
+
   return (
     <div className="p-4 min-h-full">
       <div className="container mx-auto space-y-6">
@@ -126,14 +139,11 @@ const Dashboard: React.FC = () => {
           </button>
 
           {/* Scrollable Container */}
-          <div
-            ref={scrollContainerRef}
-            className="flex gap-4 overflow-hidden"
-          >
-            {summaries.map((summary) => (
+          <div ref={scrollContainerRef} className="flex gap-4 overflow-hidden">
+            {filteredSummaries.map((summary) => (
               <AnalysisCard
                 key={summary.video_id}
-                plantName='Azalea'
+                plantName="Azalea" // Adjust this dynamically if needed
                 bedNumber={summary.bed_number}
                 collectionDate={summary.collection_date}
                 onClick={() => handleAnalysisClick(summary)}
@@ -149,9 +159,6 @@ const Dashboard: React.FC = () => {
             <FaChevronRight />
           </button>
         </div>
-
-
-
 
         {/* Please select message */}
         {!selectedAnalysis && (
@@ -196,11 +203,11 @@ const Dashboard: React.FC = () => {
                       />
                     </div>
                     {[{ label: 'Total Plants', value: plants.length },
-                    { label: 'Above Threshold', value: analysisData.analysis.above_threshold },
-                    { label: 'Average Perimeter', value: getAverageValue(plants, 'perimeter') },
-                    { label: 'Average Area', value: getAverageValue(plants, 'area') },
-                    { label: 'Collection Date', value: analysisData.collection_date },
-                    { label: 'GPS Location', value: 'N/A' }]
+                      { label: 'Above Threshold', value: analysisData.analysis.above_threshold },
+                      { label: 'Average Perimeter', value: getAverageValue(plants, 'perimeter') },
+                      { label: 'Average Area', value: getAverageValue(plants, 'area') },
+                      { label: 'Collection Date', value: analysisData.collection_date },
+                      { label: 'GPS Location', value: 'N/A' }]
                       .reduce<{ label: string; value: string | number }[][]>(
                         (result, value, index, array) => {
                           if (index % 2 === 0) {

@@ -29,7 +29,10 @@ export interface VideoInfo {
     setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
     currentPage: string;
     setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
+    searchTerm: string; // Add searchTerm
+    setSearchTerm: React.Dispatch<React.SetStateAction<string>>; // Add setSearchTerm
   }
+  
 
   export interface FilterProps {
     filters: any;
