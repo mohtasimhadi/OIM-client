@@ -1,6 +1,4 @@
-// pages/Dashboard.tsx
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import VideoCard from '../components/VideoCard';
 import PlantDetailCard from '../components/PlantDetailCard';
 import CircularProgress from '../components/CircularProgress';
@@ -9,9 +7,10 @@ import AnalysisCard from '../components/AnalysisCard';
 import { getAverageValue } from '../services/calculations';
 import { fetchSummaries, fetchAnalysisData } from '../services/api';
 import { Plant, Summary, AnalysisData } from '../types';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+
 
 const Dashboard: React.FC = () => {
-  // State for filters
   const [filters, setFilters] = useState<{
     id?: string;
     appearance?: string;
@@ -24,16 +23,11 @@ const Dashboard: React.FC = () => {
     confidenceThresholdMax?: number;
   }>({});
 
-  // State for summaries
   const [summaries, setSummaries] = useState<Summary[]>([]);
-
-  // State for selected analysis
   const [selectedAnalysis, setSelectedAnalysis] = useState<Summary | null>(null);
-
-  // State for analysis data
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Fetch summaries on component mount
   useEffect(() => {
     const getSummaries = async () => {
       try {
@@ -47,7 +41,6 @@ const Dashboard: React.FC = () => {
     getSummaries();
   }, []);
 
-  // Fetch analysis data when `selectedAnalysis` changes
   useEffect(() => {
     if (selectedAnalysis) {
       const getAnalysisData = async () => {
@@ -63,15 +56,11 @@ const Dashboard: React.FC = () => {
     }
   }, [selectedAnalysis]);
 
-  // Handler for clicking on an AnalysisCard
   const handleAnalysisClick = (summary: Summary) => {
     setSelectedAnalysis(summary);
   };
 
-  // Handler for filter input changes
-  const handleFilterChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -79,7 +68,6 @@ const Dashboard: React.FC = () => {
     }));
   };
 
-  // Handler for range filter changes
   const handleRangeChange = (name: string, min: number, max: number) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -88,10 +76,25 @@ const Dashboard: React.FC = () => {
     }));
   };
 
-  // Derive plants from analysisData if available
-  const plants: Plant[] = analysisData?.analysis?.track_data ?? [];
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        left: -300,
+        behavior: 'smooth',
+      });
+    }
+  };
 
-  // Filter the list of plants based on filters
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        left: 300,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const plants: Plant[] = analysisData?.analysis?.track_data ?? [];
   const filteredPlants = plants.filter((plant) => {
     return (
       (!filters.id || plant.track_id.includes(filters.id)) &&
@@ -112,36 +115,64 @@ const Dashboard: React.FC = () => {
   return (
     <div className="p-4 min-h-full">
       <div className="container mx-auto space-y-6">
-        {/* Analysis Overview Cards */}
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {summaries.map((summary) => (
-            <AnalysisCard
-              key={summary.video_id}
-              videoId={summary.video_id}
-              bedNumber={summary.bed_number}
-              collectionDate={summary.collection_date}
-              onClick={() => handleAnalysisClick(summary)} // Handle click event
-            />
-          ))}
+        {/* Scrollable Analysis Overview Cards */}
+        <div className="relative flex items-center justify-center">
+          {/* Left Arrow */}
+          <button
+            onClick={scrollLeft}
+            className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-10 text-black"
+          >
+            <FaChevronLeft />
+          </button>
+
+          {/* Scrollable Container */}
+          <div
+            ref={scrollContainerRef}
+            className="flex gap-4 overflow-hidden"
+          >
+            {summaries.map((summary) => (
+              <AnalysisCard
+                key={summary.video_id}
+                videoId={summary.video_id}
+                bedNumber={summary.bed_number}
+                collectionDate={summary.collection_date}
+                onClick={() => handleAnalysisClick(summary)}
+              />
+            ))}
+          </div>
+
+          {/* Right Arrow */}
+          <button
+            onClick={scrollRight}
+            className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-10 text-black"
+          >
+            <FaChevronRight />
+          </button>
         </div>
 
+
+
+
+        {/* Please select message */}
+        {!selectedAnalysis && (
+          <div className="flex justify-center items-center h-40 text-gray-500 text-xl">
+            Please select a bed to view analysis.
+          </div>
+        )}
+
         {/* Only display the dashboard after analysis data is fetched */}
-        {analysisData && analysisData.analysis && analysisData.video_id ? (
+        {analysisData && analysisData.analysis && analysisData.video_id && selectedAnalysis ? (
           <>
-            {/* Large Information Card */}
             <div className="rounded-lg shadow-md p-6 bg-white/10 relative">
-              <div className="absolute top-0 left-0 bg-gray-200 text-black px-4 py-2 font-semibold text-xl">
-                Azalea | Bed: {selectedAnalysis?.bed_number}
+              <div className="absolute top-0 left-0 bg-gray-200 text-black px-4 py-2 font-semibold text-xl rounded-tl-lg rounded-br-lg">
+                Azalea
               </div>
               <button className="absolute top-0 right-0 px-4 py-2 bg-blue-500 rounded-bl-lg rounded-tr-lg font-semibold transition hover:bg-blue-700">
                 Download XLSX
               </button>
 
-              {/* Dashboard content */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pt-12">
-                {/* Left Column (1/3 Size) */}
                 <div className="col-span-1 space-y-4">
-                  {/* Circular Progress Section */}
                   <div className="flex flex-col space-y-4 items-center justify-center">
                     <div className="flex items-center space-x-4 justify-around">
                       <CircularProgress
@@ -164,32 +195,12 @@ const Dashboard: React.FC = () => {
                         size="large"
                       />
                     </div>
-                    {[
-                      {
-                        label: 'Total Plants',
-                        value: plants.length,
-                      },
-                      {
-                        label: 'Above Threshold',
-                        value: analysisData.analysis.above_threshold,
-                      },
-                      {
-                        label: 'Average Perimeter',
-                        value: getAverageValue(plants, 'perimeter'),
-                      },
-                      {
-                        label: 'Average Area',
-                        value: getAverageValue(plants, 'area'),
-                      },
-                      {
-                        label: 'Collection Date',
-                        value: analysisData.collection_date,
-                      },
-                      {
-                        label: 'GPS Location',
-                        value: 'N/A', // Replace with actual GPS data if available
-                      },
-                    ]
+                    {[{ label: 'Total Plants', value: plants.length },
+                    { label: 'Above Threshold', value: analysisData.analysis.above_threshold },
+                    { label: 'Average Perimeter', value: getAverageValue(plants, 'perimeter') },
+                    { label: 'Average Area', value: getAverageValue(plants, 'area') },
+                    { label: 'Collection Date', value: analysisData.collection_date },
+                    { label: 'GPS Location', value: 'N/A' }]
                       .reduce<{ label: string; value: string | number }[][]>(
                         (result, value, index, array) => {
                           if (index % 2 === 0) {
@@ -213,32 +224,13 @@ const Dashboard: React.FC = () => {
                           ))}
                         </div>
                       ))}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                   </div>
                 </div>
 
-                {/* Right Column (2/3 Size) */}
-                <div className="col-span-2 space-y-4 flex flex-col items-center justify-center">
-                  {/* Video Cards Section */}
+                <div className="col-span-2 space-y-4 flex flex-col items-center justify-around">
+                  <div className="w-full bg-gray-200 text-black px-4 py-2 font-semibold text-3xl text-center">
+                    Bed: {selectedAnalysis?.bed_number}
+                  </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                     <VideoCard
                       key={`${analysisData.video_id}`}
@@ -255,14 +247,12 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* Filter Section */}
             <Filters
               filters={filters}
               handleFilterChange={handleFilterChange}
               handleRangeChange={handleRangeChange}
             />
 
-            {/* Plant Details Cards */}
             <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
               {filteredPlants.map((plant) => (
                 <PlantDetailCard key={plant.track_id} {...plant} />
@@ -270,7 +260,6 @@ const Dashboard: React.FC = () => {
             </div>
           </>
         ) : (
-          // Optional: Display a loading indicator or message when analysisData is not yet available
           selectedAnalysis && (
             <div className="flex justify-center items-center mt-10">
               <p className="text-gray-500">Loading analysis data...</p>
