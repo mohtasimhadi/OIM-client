@@ -235,10 +235,10 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                 </div>
 
                 <div className="col-span-2 space-y-4 flex flex-col items-center justify-around">
-                  <div className="w-full bg-gray-200 text-black px-4 py-2 font-semibold text-3xl text-center">
+                  <div className="w-full bg-white/15 px-4 py-2 font-semibold text-3xl text-center rounded-lg">
                     Bed: {selectedAnalysis?.bed_number}
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full bg-white/15 rounded-lg p-4">
                     <VideoCard
                       key={`${analysisData.video_id}`}
                       title="Original Video"
