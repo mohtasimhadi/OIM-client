@@ -6,7 +6,7 @@ const CircularProgress: React.FC<{
   value: number;
   label: string;
 }> = ({ value, label }) => (
-  <div className="flex flex-col items-center space-y-2">
+  <div className="flex flex-col items-center space-y-2 ">
     <div className="relative w-16 h-16">
       <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
         {/* Background Circle */}
@@ -55,9 +55,9 @@ const PlantDetailCard: React.FC<PlantDetailCardProps> = ({
   appearance,
   rating,
 }) => (
-  <div className="relative rounded-lg shadow-lg p-6 flex bg-white/10">
+  <div className="relative rounded-lg shadow-lg p-6 flex bg-white/10 hover:scale-105 hover:bg-white/15">
     {/* Plant ID Tag */}
-    <div className="absolute top-0 left-0 bg-white text-black px-3 py-2 rounded-tl-lg rounded-br-lg text-xs font-bold">
+    <div className="absolute top-0 right-0 bg-white text-black px-3 py-2 rounded-tr-lg rounded-bl-lg text-xl font-bold">
       Plant ID: {id}
     </div>
 
