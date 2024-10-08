@@ -35,8 +35,7 @@ const UploadVideo: React.FC = () => {
     try {
       setIsUploading(true);
       const result = await uploadVideos(videoInfo);
-      console.log(result);
-      toast.success('Upload process completed. Check console for details.');
+      toast.success('Upload process completed!', result);
       setDroppedFiles([]);
     } catch (error) {
       toast.error('An error occurred during the upload. Please check the console for more details.');
