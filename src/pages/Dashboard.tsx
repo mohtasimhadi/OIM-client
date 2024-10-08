@@ -13,6 +13,12 @@ import { SiGooglesheets, SiNamecheap } from "react-icons/si";
 import { FaPlay } from "react-icons/fa";
 import { FaPause, FaStop } from 'react-icons/fa6';
 import ReactPlayer from 'react-player';
+import { LiaDrawPolygonSolid } from "react-icons/lia";
+import { IoShapesOutline } from "react-icons/io5";
+import { MdOutlineDateRange } from "react-icons/md";
+import { PiGpsFixFill } from "react-icons/pi";
+import { PiPottedPlantLight } from "react-icons/pi";
+import { MdAddchart } from "react-icons/md";
 
 interface DashboardProps {
   searchTerm: string;
@@ -216,33 +222,37 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                 <SiGooglesheets className='mr-2' /> Download XLSX
               </button>
 
+              <div className="flex items-center justify-center w-full bg-white/15 px-4 py-2 font-semibold text-3xl text-center rounded-lg mt-10">
+                <SiNamecheap className='mr-2' /> {selectedAnalysis?.bed_number}
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pt-12">
                 <div className="col-span-1 space-y-4">
                   <div className="flex flex-col space-y-4 items-center justify-center">
                     <div className="flex items-center space-x-4 justify-around">
                       <CircularProgress
                         value={plants.length > 0 ? analysisData.analysis.above_threshold / plants.length : 0}
-                        label="Quality Above Threshold"
+                        label="Quality"
                         size="large"
                       />
                       <CircularProgress
                         value={getAverageValue(plants, 'circularity')}
-                        label="Mean Circularity"
+                        label="Circularity"
                         size="large"
                       />
                       <CircularProgress
                         value={getAverageValue(plants, 'eccentricity')}
-                        label="Mean Eccentricity"
+                        label="Eccentricity"
                         size="large"
                       />
                     </div>
-                    {[{ label: 'Total Plants', value: plants.length },
-                    { label: 'Above Threshold', value: analysisData.analysis.above_threshold },
-                    { label: 'Mean Perimeter', value: getAverageValue(plants, 'perimeter') },
-                    { label: 'Mean Area', value: getAverageValue(plants, 'area') },
-                    { label: 'Collection Date', value: analysisData.collection_date },
-                    { label: 'GPS Location', value: 'N/A' }]
-                      .reduce<{ label: string; value: string | number }[][]>(
+                    {[{ icon: <PiPottedPlantLight className='mr-2' />, label: 'Total', value: plants.length },
+                    { icon: <MdAddchart className='mr-2' />, label: 'Quality', value: analysisData.analysis.above_threshold },
+                    { icon: <LiaDrawPolygonSolid className='mr-2' />, label: 'Perimeter', value: getAverageValue(plants, 'perimeter') },
+                    { icon: <IoShapesOutline className='mr-2' />, label: 'Area', value: getAverageValue(plants, 'area') },
+                    { icon: <MdOutlineDateRange className='mr-2' />, label: 'Date', value: analysisData.collection_date },
+                    { icon: <PiGpsFixFill className='mr-2' />, label: 'Location', value: 'N/A' }]
+                      .reduce<{ icon: React.ReactNode; label: string; value: string | number }[][]>(
                         (result, value, index, array) => {
                           if (index % 2 === 0) {
                             result.push(array.slice(index, index + 2));
@@ -255,8 +265,9 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                         <div key={rowIndex} className="flex w-full mb-2">
                           {pair.map((item, colIndex) => (
                             <div key={colIndex} className="flex w-1/2 pr-2">
-                              <div className="bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-                                {item.label}:
+                              <div className="flex items-center bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
+                                <div className='w-1/4' >{item.icon}</div>
+                                <p >{item.label}:</p>
                               </div>
                               <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2 flex items-center overflow-hidden">
                                 {item.value}
@@ -269,9 +280,6 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                 </div>
 
                 <div className="col-span-2 space-y-4 flex flex-col items-center justify-around">
-                  <div className="flex items-center justify-center w-full bg-white/15 px-4 py-2 font-semibold text-3xl text-center rounded-lg">
-                    <SiNamecheap className='mr-2' /> {selectedAnalysis?.bed_number}
-                  </div>
 
                   {/* Video Controls */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full bg-white/15 rounded-lg p-4">
@@ -293,16 +301,16 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                     />
                   </div>
                   <div className="flex w-full items-center justify-center space-x-4 my-2">
-                      <div className="flex items-center justify-center space-x-4 my-2">
-                        <button
-                          onClick={togglePlayPause}
-                          className={`px-4 py-2 rounded-full bg-white/15 text-white`}>
-                          {playing ? <FaPause /> : <FaPlay />}
-                        </button>
-                        <button onClick={stopVideos} className="px-4 py-2 rounded-full bg-white/15 text-white"><FaStop /></button>
-                      </div>
+                    <div className="flex items-center justify-center space-x-4 my-2">
+                      <button
+                        onClick={togglePlayPause}
+                        className={`px-4 py-2 rounded-full bg-white/15 text-white`}>
+                        {playing ? <FaPause /> : <FaPlay />}
+                      </button>
+                      <button onClick={stopVideos} className="px-4 py-2 rounded-full bg-white/15 text-white"><FaStop /></button>
+                    </div>
 
-                      <input
+                    <input
                       type="range"
                       min="0"
                       max="1"
@@ -311,7 +319,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                       onChange={handleSeek}
                       className="w-full h-2 bg-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
-                    </div>
+                  </div>
 
 
 
