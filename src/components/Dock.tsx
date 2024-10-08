@@ -3,7 +3,6 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import UserMenu from "./UserMenu";
 import { DockProps } from "../types";
 
-
 const Dock: React.FC<DockProps> = ({
   darkMode,
   setDarkMode,
@@ -29,7 +28,7 @@ const Dock: React.FC<DockProps> = ({
 
       <div className="flex items-center justify-around w-2/3">
         <button
-          className={`text-center transition-colors ${
+          className={`text-center flex items-center space-x-2 transition-colors ${
             currentPage === "dashboard"
               ? darkMode
                 ? "text-blue-400"
@@ -38,10 +37,12 @@ const Dock: React.FC<DockProps> = ({
           } font-bold`}
           onClick={() => setCurrentPage("dashboard")}
         >
-          Dashboard
+          <i className="fas fa-tachometer-alt"></i>
+          <span>Dashboard</span>
         </button>
+
         <button
-          className={`text-center transition-colors ${
+          className={`text-center flex items-center space-x-2 transition-colors ${
             currentPage === "map"
               ? darkMode
                 ? "text-blue-400"
@@ -50,10 +51,12 @@ const Dock: React.FC<DockProps> = ({
           } font-bold`}
           onClick={() => setCurrentPage("map")}
         >
-          Map
+          <i className="fas fa-map-marker-alt"></i>
+          <span>Map</span>
         </button>
+
         <button
-          className={`text-center transition-colors ${
+          className={`text-center flex items-center space-x-2 transition-colors ${
             currentPage === "upload"
               ? darkMode
                 ? "text-blue-400"
@@ -62,7 +65,8 @@ const Dock: React.FC<DockProps> = ({
           } font-bold`}
           onClick={() => setCurrentPage("upload")}
         >
-          Upload
+          <i className="fas fa-upload"></i>
+          <span>Upload</span>
         </button>
 
         <div className="h-6 w-px bg-white mx-4"></div>
