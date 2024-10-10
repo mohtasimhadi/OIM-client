@@ -24,6 +24,10 @@ export interface VideoInfo {
     size?: 'small' | 'large';
   }
 
+  export interface PlantDetailsProps{
+    data: any;
+  }
+
   export interface DockProps {
     darkMode: boolean;
     setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;

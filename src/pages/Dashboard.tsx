@@ -19,6 +19,7 @@ import { MdOutlineDateRange } from "react-icons/md";
 import { PiGpsFixFill } from "react-icons/pi";
 import { PiPottedPlantLight } from "react-icons/pi";
 import { MdAddchart } from "react-icons/md";
+import CircularityAndEccentricityLineGraph from '../components/DataChart';
 
 interface DashboardProps {
   searchTerm: string;
@@ -165,7 +166,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     return (
       summary.bed_number.toLowerCase().includes(lowerCaseSearchTerm) ||
-      'Azalea'.toLowerCase().includes(lowerCaseSearchTerm) // Replace 'Azalea' with dynamic plant name if needed
+      'Azalea'.toLowerCase().includes(lowerCaseSearchTerm)
     );
   });
 
@@ -224,6 +225,9 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
 
               <div className="flex items-center justify-center w-full bg-white/15 px-4 py-2 font-semibold text-3xl text-center rounded-lg mt-10">
                 <SiNamecheap className='mr-2' /> {selectedAnalysis?.bed_number}
+              </div>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4 w-full rounded-lg p-4'>
+              <CircularityAndEccentricityLineGraph data={analysisData?.analysis?.track_data}/>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pt-12">
