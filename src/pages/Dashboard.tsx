@@ -11,15 +11,11 @@ import { PiPottedPlantBold } from "react-icons/pi";
 import { FaPlay } from "react-icons/fa";
 import { FaPause, FaStop } from 'react-icons/fa6';
 import ReactPlayer from 'react-player';
-import { LiaDrawPolygonSolid } from "react-icons/lia";
-import { IoShapesOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
-import { PiGpsFixFill } from "react-icons/pi";
-import { PiPottedPlantLight } from "react-icons/pi";
-import { MdAddchart } from "react-icons/md";
-import CircularityAndEccentricityLineGraph from '../components/DataChart';
+import CircularityAndEccentricityLineGraph from '../components/CircularityAndEccentricityLineGraph';
 import TotalOverviewCard from '../components/TotalOverviewCard';
 import { IoCloudDownloadOutline } from "react-icons/io5";
+import AreaAndPerimeterLineGraph from '../components/AreaAndPerimeterLineGraph';
 
 interface DashboardProps {
   searchTerm: string;
@@ -43,10 +39,10 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const playerRefOriginal = useRef<ReactPlayer | null>(null); // Original video ref
-  const playerRefAnnotated = useRef<ReactPlayer | null>(null); // Annotated video ref
-  const [playing, setPlaying] = useState(false); // Controls play/pause state
-  const [progress, setProgress] = useState(0); // Tracks progress
+  const playerRefOriginal = useRef<ReactPlayer | null>(null);
+  const playerRefAnnotated = useRef<ReactPlayer | null>(null);
+  const [playing, setPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const getSummaries = async () => {
@@ -216,9 +212,9 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
         {analysisData && analysisData.analysis && analysisData.video_id && selectedAnalysis ? (
           <>
             <div className="rounded-lg shadow-md p-6 bg-white/10 relative">
-              <div className="flex flex-row w-full">
-                <div className="w-1/3 flex flex-col mr-2">
-                  <div className='w-full flex bg-gradient-to-r from-white-15 via-white-15 to-black-10 rounded-lg'>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="col-span-1 space-y-4">
+                  <div className='w-full flex bg-gradient-to-r from-white-15 via-white-15 to-black-10 rounded-lg hover:scale-105'>
                     <div>
                       <div className="flex items-center pt-4 pl-4 w-full font-semibold text-3xl">
                         {selectedAnalysis?.bed_number}
@@ -242,61 +238,51 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                     </div>
                     <div className='flex items-center justify-center ml-4'>
                       <button className='flex items-center justify-center space-x-2 hover:bg-white/15 rounded-lg p-4'>
-                        <IoCloudDownloadOutline size={48}/>
+                        <IoCloudDownloadOutline size={48} />
                       </button>
                     </div>
                   </div>
                 </div>
-                <div className="w-2/3 flex flex-col ml-2">
+                <div className="col-span-2 space-y-4 flex flex-col items-center justify-around">
                   <div className='grid grid-cols-2 md:grid-cols-4 gap-4 w-full'>
-                    <TotalOverviewCard title='Average Area' value={getAverageValue(plants, 'area')} />
-                    <TotalOverviewCard title='Average Perimeter' value={getAverageValue(plants, 'perimeter')} />
-                    <TotalOverviewCard title='Average Circularity' value={(getAverageValue(plants, 'circularity') * 100) + "%"} />
-                    <TotalOverviewCard title='Average Eccentricity' value={(getAverageValue(plants, 'eccentricity') * 100) + "%"} />
+                    <TotalOverviewCard title='Average Area' value={getAverageValue(plants, 'area')} color='#808700'/>
+                    <TotalOverviewCard title='Average Perimeter' value={getAverageValue(plants, 'perimeter')} color='#00874c'/>
+                    <TotalOverviewCard title='Average Circularity' value={(getAverageValue(plants, 'circularity') * 100) + "%"} color='#000087'/>
+                    <TotalOverviewCard title='Average Eccentricity' value={(getAverageValue(plants, 'eccentricity') * 100) + "%"} color='#500087'/>
                   </div>
+                </div>
+              </div>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4 w-full rounded-lg pt-4'>
+                <CircularityAndEccentricityLineGraph data={analysisData?.analysis?.track_data} />
+                <div className='flex flex-col'>
+                  <AreaAndPerimeterLineGraph data={analysisData?.analysis?.track_data} graph='area' />
+                  <p className='p-2' />
+                  <AreaAndPerimeterLineGraph data={analysisData?.analysis?.track_data} graph='perimeter' />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pt-12">
                 <div className="col-span-1 space-y-4">
-                  <div className="flex flex-col space-y-4 items-center justify-center">
-                    {[{ icon: <PiPottedPlantLight className='mr-2' />, label: 'Total', value: plants.length },
-                    { icon: <MdAddchart className='mr-2' />, label: 'Quality', value: analysisData.analysis.above_threshold },
-                    { icon: <LiaDrawPolygonSolid className='mr-2' />, label: 'Perimeter', value: getAverageValue(plants, 'perimeter') },
-                    { icon: <IoShapesOutline className='mr-2' />, label: 'Area', value: getAverageValue(plants, 'area') },
-                    { icon: <MdOutlineDateRange className='mr-2' />, label: 'Date', value: analysisData.collection_date },
-                    { icon: <PiGpsFixFill className='mr-2' />, label: 'Location', value: 'N/A' }]
-                      .reduce<{ icon: React.ReactNode; label: string; value: string | number }[][]>(
-                        (result, value, index, array) => {
-                          if (index % 2 === 0) {
-                            result.push(array.slice(index, index + 2));
-                          }
-                          return result;
-                        },
-                        []
-                      )
-                      .map((pair, rowIndex) => (
-                        <div key={rowIndex} className="flex w-full mb-2">
-                          {pair.map((item, colIndex) => (
-                            <div key={colIndex} className="flex w-1/2 pr-2">
-                              <div className="flex items-center bg-white/30 text-white px-4 py-2 rounded-l-lg font-semibold w-1/2">
-                                <div className='w-1/4' >{item.icon}</div>
-                                <p >{item.label}:</p>
-                              </div>
-                              <div className="bg-white/20 text-white px-4 py-2 rounded-r-lg w-1/2 flex items-center overflow-hidden">
-                                {item.value}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ))}
+                  <div className='w-full flex'>
+                    <div className='w-1/2 bg-black/30 rounded-lg p-4'>
+                      Grade
+                    </div>
+                    <div className='w-1/2 bg-black/15 rounded-lg p-4'>
+                      A
+                    </div>
                   </div>
+
+
+
+
+
+
                 </div>
 
-                <div className="col-span-2 space-y-4 flex flex-col items-center justify-around">
+                <div className="col-span-2 space-y-4 flex flex-col items-center justify-around bg-black/15 p-4 rounded-lg">
 
                   {/* Video Controls */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full bg-white/15 rounded-lg p-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                     <VideoCard
                       ref={playerRefOriginal}
                       key={`${analysisData.video_id}`}
@@ -335,11 +321,10 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                     />
                   </div>
                 </div>
-                
+
               </div>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4 w-full rounded-lg p-4'>
-                <CircularityAndEccentricityLineGraph data={analysisData?.analysis?.track_data} />
-              </div>
+
+
             </div>
 
             <Filters

@@ -7,9 +7,12 @@ import { MdOutlineDateRange as Date } from 'react-icons/md';
 import { TbOvalVertical as Eccentricity } from "react-icons/tb";
 import { GiPlainCircle as Circularity } from "react-icons/gi";
 
-const TotalOverviewCard: React.FC<TotalOverViewProps> = ({ title, value }) => {
+const TotalOverviewCard: React.FC<TotalOverViewProps> = ({ title, value, color }) => {
     return (
-        <div className='w-full bg-gradient-to-r from-white-15 via-black-10 p-4 rounded-lg'>
+        <div 
+            className='w-full p-4 rounded-lg hover:scale-105'
+            style={{ background: `linear-gradient(to right, ${color}, ${color}, rgba(0, 0, 0, 0.40))` }}
+        >
             {title === 'Total Plants' && <Plant size={48}/>}
             {title === 'Average Area' && <Area size={48}/>}
             {title === 'Average Perimeter' && <Perimeter size={48}/>}

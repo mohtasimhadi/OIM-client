@@ -24,13 +24,19 @@ export interface VideoInfo {
     size?: 'small' | 'large';
   }
 
-  export interface PlantDetailsProps{
+  export interface CircularityEccentricityProps{
     data: any;
+  }
+
+  export interface AreaPerimeterProps{
+    data: any;
+    graph: string;
   }
 
   export interface TotalOverViewProps{
     title: string;
     value: number | string;
+    color: string;
   }
 
   export interface DockProps {
