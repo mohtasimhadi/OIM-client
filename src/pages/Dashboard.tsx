@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import VideoCard from '../components/VideoCard';
 import PlantDetailCard from '../components/PlantDetailCard';
-import CircularProgress from '../components/CircularProgress';
 import Filters from '../components/Filters';
 import AnalysisCard from '../components/AnalysisCard';
 import { getAverageValue } from '../services/calculations';
@@ -9,7 +8,6 @@ import { fetchSummaries, fetchAnalysisData } from '../services/api';
 import { Plant, Summary, AnalysisData } from '../types';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { PiPottedPlantBold } from "react-icons/pi";
-import { SiGooglesheets, SiNamecheap } from "react-icons/si";
 import { FaPlay } from "react-icons/fa";
 import { FaPause, FaStop } from 'react-icons/fa6';
 import ReactPlayer from 'react-player';
@@ -20,6 +18,8 @@ import { PiGpsFixFill } from "react-icons/pi";
 import { PiPottedPlantLight } from "react-icons/pi";
 import { MdAddchart } from "react-icons/md";
 import CircularityAndEccentricityLineGraph from '../components/DataChart';
+import TotalOverviewCard from '../components/TotalOverviewCard';
+import { IoCloudDownloadOutline } from "react-icons/io5";
 
 interface DashboardProps {
   searchTerm: string;
@@ -216,40 +216,50 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
         {analysisData && analysisData.analysis && analysisData.video_id && selectedAnalysis ? (
           <>
             <div className="rounded-lg shadow-md p-6 bg-white/10 relative">
-              <div className="flex items-center absolute top-0 left-0 bg-gray-200 text-black px-4 py-2 font-semibold text-xl rounded-tl-lg rounded-br-lg">
-                <PiPottedPlantBold className='mr-2' /> Azalea
-              </div>
-              <button className="flex items-center absolute top-0 right-0 px-4 py-2 bg-blue-500 rounded-bl-lg rounded-tr-lg font-semibold transition hover:bg-blue-700">
-                <SiGooglesheets className='mr-2' /> Download XLSX
-              </button>
-
-              <div className="flex items-center justify-center w-full bg-white/15 px-4 py-2 font-semibold text-3xl text-center rounded-lg mt-10">
-                <SiNamecheap className='mr-2' /> {selectedAnalysis?.bed_number}
-              </div>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4 w-full rounded-lg p-4'>
-              <CircularityAndEccentricityLineGraph data={analysisData?.analysis?.track_data}/>
+              <div className="flex flex-row w-full">
+                <div className="w-1/3 flex flex-col mr-2">
+                  <div className='w-full flex bg-gradient-to-r from-white-15 via-white-15 to-black-10 rounded-lg'>
+                    <div>
+                      <div className="flex items-center pt-4 pl-4 w-full font-semibold text-3xl">
+                        {selectedAnalysis?.bed_number}
+                      </div>
+                      <div className='flex'>
+                        <div className='p-4 flex items-center justify-center'>
+                          <div className='mr-2' ><MdOutlineDateRange size={32} /></div>
+                          <div>
+                            <p className='font-semibold text-xl'>{analysisData?.collection_date}</p>
+                            <p>Collection Date</p>
+                          </div>
+                        </div>
+                        <div className='p-4 flex items-center justify-center'>
+                          <div className='mr-2' ><PiPottedPlantBold size={32} /></div>
+                          <div>
+                            <p className='font-semibold text-xl'>{analysisData?.analysis?.track_data?.length}</p>
+                            <p>Total Plants</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='flex items-center justify-center ml-4'>
+                      <button className='flex items-center justify-center space-x-2 hover:bg-white/15 rounded-lg p-4'>
+                        <IoCloudDownloadOutline size={48}/>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-2/3 flex flex-col ml-2">
+                  <div className='grid grid-cols-2 md:grid-cols-4 gap-4 w-full'>
+                    <TotalOverviewCard title='Average Area' value={getAverageValue(plants, 'area')} />
+                    <TotalOverviewCard title='Average Perimeter' value={getAverageValue(plants, 'perimeter')} />
+                    <TotalOverviewCard title='Average Circularity' value={(getAverageValue(plants, 'circularity') * 100) + "%"} />
+                    <TotalOverviewCard title='Average Eccentricity' value={(getAverageValue(plants, 'eccentricity') * 100) + "%"} />
+                  </div>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pt-12">
                 <div className="col-span-1 space-y-4">
                   <div className="flex flex-col space-y-4 items-center justify-center">
-                    <div className="flex items-center space-x-4 justify-around">
-                      <CircularProgress
-                        value={plants.length > 0 ? analysisData.analysis.above_threshold / plants.length : 0}
-                        label="Quality"
-                        size="large"
-                      />
-                      <CircularProgress
-                        value={getAverageValue(plants, 'circularity')}
-                        label="Circularity"
-                        size="large"
-                      />
-                      <CircularProgress
-                        value={getAverageValue(plants, 'eccentricity')}
-                        label="Eccentricity"
-                        size="large"
-                      />
-                    </div>
                     {[{ icon: <PiPottedPlantLight className='mr-2' />, label: 'Total', value: plants.length },
                     { icon: <MdAddchart className='mr-2' />, label: 'Quality', value: analysisData.analysis.above_threshold },
                     { icon: <LiaDrawPolygonSolid className='mr-2' />, label: 'Perimeter', value: getAverageValue(plants, 'perimeter') },
@@ -324,11 +334,11 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                       className="w-full h-2 bg-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
-
-
-
-
                 </div>
+                
+              </div>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4 w-full rounded-lg p-4'>
+                <CircularityAndEccentricityLineGraph data={analysisData?.analysis?.track_data} />
               </div>
             </div>
 

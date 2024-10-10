@@ -28,6 +28,11 @@ export interface VideoInfo {
     data: any;
   }
 
+  export interface TotalOverViewProps{
+    title: string;
+    value: number | string;
+  }
+
   export interface DockProps {
     darkMode: boolean;
     setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
