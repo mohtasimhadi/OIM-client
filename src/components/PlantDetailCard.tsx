@@ -5,6 +5,8 @@ import { IoShapesOutline } from "react-icons/io5";
 import { TbOvalVertical } from "react-icons/tb";
 import { GiPlainCircle } from "react-icons/gi";
 import { MdOutlineMultilineChart } from "react-icons/md";
+import { fetchImage } from '../services/api';
+import { useState, useEffect } from 'react';
 
 
 const CircularProgress: React.FC<{
@@ -60,9 +62,22 @@ const PlantDetailCard: React.FC<PlantDetailCardProps> = ({
   area,
   perimeter,
   confidence,
-  appearance,
-  rating,
-}) => (
+}) => {
+  const [imageUrl, setImageUrl] = useState<string>('');
+
+  useEffect(() => {
+    const loadImage = async () => {
+      try {
+        const url = await fetchImage(image);
+        setImageUrl(url);
+      } catch (error) {
+        console.error('Error loading image:', error);
+      }
+    };
+    loadImage();
+  }, [image]);
+
+  return (
   <div className="relative rounded-lg shadow-lg p-6 flex bg-white/10 hover:scale-105 hover:bg-white/15">
     {/* Plant ID Tag */}
     <div className="absolute top-0 right-0 bg-white text-black px-3 py-2 rounded-tr-lg rounded-bl-lg text-xl font-bold">
@@ -71,7 +86,7 @@ const PlantDetailCard: React.FC<PlantDetailCardProps> = ({
 
     {/* Left Column - Plant Image */}
     <div className="w-1/3 h-35">
-      <img src={`http://10.33.9.30:8000/image/view/${image}`} alt="Plant" className="w-full aspect-square rounded-md shadow-sm" />
+      <img src={imageUrl} alt="Plant" className="w-full aspect-square rounded-md shadow-sm" />
     </div>
 
     {/* Right Column - Details */}
@@ -107,7 +122,7 @@ const PlantDetailCard: React.FC<PlantDetailCardProps> = ({
 
       </div>
     </div>
-  </div>
-);
+  </div>)
+};
 
 export default PlantDetailCard;

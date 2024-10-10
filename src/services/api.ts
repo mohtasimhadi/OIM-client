@@ -1,8 +1,24 @@
-import axios from 'axios';
+import axios from "axios";
+const API_BASE_URL = process.env.REACT_APP_API_GATEWAY_URL;
+
+export const fetchImage = async (imageID: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/view/image/${imageID}`, {
+      responseType: 'blob',
+    });
+    if (response.status !== 200) {
+      throw new Error('Failed to fetch image');
+    }
+    return URL.createObjectURL(response.data);
+  } catch (error) {
+    console.error('Error fetching image:', error);
+    throw error;
+  }
+}
 
 export const fetchVideo = async (videoID: string) => {
   try {
-    const response = await axios.get(`http://10.33.9.30:8080/view/video/${videoID}`, {
+    const response = await axios.get(`${API_BASE_URL}/view/video/${videoID}`, {
       responseType: 'blob',
     });
     if (response.status !== 200) {
@@ -33,7 +49,7 @@ export const uploadVideos = async (videoInfo: {
   });
 
   try {
-    const response = await axios.post('http://10.33.9.30:8080/upload/', formData, {
+    const response = await axios.post(`${API_BASE_URL}/upload/`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -48,7 +64,8 @@ export const uploadVideos = async (videoInfo: {
 
 export const fetchSummaries = async () => {
   try {
-    const response = await axios.get('http://10.33.9.30:8080/data/summaries');
+    console.log('API Base URL:', process.env.API_GATEWAY_URL, 'API:', API_BASE_URL);
+    const response = await axios.get(`${API_BASE_URL}/data/summaries`);
     return response.data;
   } catch (error) {
     console.error('Error fetching summaries:', error);
@@ -58,7 +75,7 @@ export const fetchSummaries = async () => {
 
 export const fetchAnalysisData = async (videoId: string) => {
   try {
-    const apiUrl = `http://10.33.9.30:8080/data/${encodeURIComponent(videoId)}`;
+    const apiUrl = `${API_BASE_URL}/data/${encodeURIComponent(videoId)}`;
     const response = await axios.get(apiUrl);
     return response.data;
   } catch (error) {
