@@ -11,7 +11,7 @@ const TotalOverviewCard: React.FC<TotalOverViewProps> = ({ title, value, color }
     return (
         <div 
             className='w-full p-4 rounded-lg hover:scale-105'
-            style={{ background: `linear-gradient(to right, ${color}, ${color}, rgba(0, 0, 0, 0.40))` }}
+            style={{ background: `linear-gradient(to right, ${color}, ${color}, rgba(255, 255, 255, .03))` }}
         >
             {title === 'Total Plants' && <Plant size={48}/>}
             {title === 'Average Area' && <Area size={48}/>}
