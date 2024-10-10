@@ -36,7 +36,7 @@ const CircularityAndEccentricityLineGraph: React.FC<CircularityEccentricityProps
 
     return (
 
-        <div className="p-2 bg-black/15 w-full hover:scale-105">
+        <div className="p-2 bg-black/15 w-full">
             <div className='p-5'>
                 <ResponsiveContainer width="100%" height={350}>
                     <AreaChart data={enhancedData}>

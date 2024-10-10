@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { UserMenuProps } from '../types';
+import { FaUser } from "react-icons/fa";
 
 const UserMenu: React.FC<UserMenuProps> = ({ darkMode }) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -8,9 +9,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ darkMode }) => {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className={`p-4 rounded-full transition ${darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-700 text-white hover:bg-gray-700'}`}
+        className={`p-4 rounded-full transition ${darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-700 text-white hover:bg-gray-600'}`}
       >
-        <i className="fas fa-user fa-lg"></i>
+        <FaUser/>
       </button>
       {open && (
         <div className={`absolute right-0 mt-2 w-48 rounded-md shadow-lg ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border`}>

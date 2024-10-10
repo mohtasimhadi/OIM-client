@@ -33,7 +33,7 @@ const AreaAndPerimeterLineGraph: React.FC<AreaPerimeterProps> = ({ data, graph }
 
     return (
 
-        <div className="p-2 bg-black/15 w-full hover:scale-105">
+        <div className="p-2 bg-black/15 w-full">
             <ResponsiveContainer width="100%" height={170}>
                 <AreaChart data={enhancedData}>
                     <XAxis dataKey="track_id" interval={10} tick={{ fill: '#ffffff' }}>
