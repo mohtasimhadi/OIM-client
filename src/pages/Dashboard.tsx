@@ -99,7 +99,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
           selectedAnalysis={selectedAnalysis} />
 
         {/* Only display the dashboard after analysis data is fetched */}
-        {analysisData && analysisData.analysis && analysisData.video_id ? (
+        {analysisData ? (
           <>
             <div className="rounded-lg shadow-md p-6 bg-white/10 relative">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
