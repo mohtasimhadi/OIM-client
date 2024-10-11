@@ -90,20 +90,9 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pt-12">
+              <div className="grid grid-cols-1 md:grid-cols-1 gap-4 mb-4 pt-4">
 
-                <div className="col-span-1 space-y-4">
-                  <div className='w-full flex'>
-                    <div className='w-1/2 bg-black/30 rounded-lg p-4'>
-                      Grade
-                    </div>
-                    <div className='w-1/2 bg-black/15 rounded-lg p-4'>
-                      A
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-span-2 space-y-4 flex flex-col items-center justify-around bg-black/15 p-4 rounded-lg">
+                <div className="col-span-1 space-y-4 flex flex-col items-center justify-around bg-black/15 p-4 rounded-lg">
                   <VideoDash video={analysisData.video_id} annotatedVideo={analysisData.analysis.video_id} />
                 </div>
 
