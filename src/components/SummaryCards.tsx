@@ -1,18 +1,59 @@
 import AnalysisCard from '../components/AnalysisCard';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { Summary } from '../types';
+import React, { useRef, useEffect, useState } from 'react';
+import { fetchSummaries } from '../services/api';
 
 interface SummaryCardsProps {
-    scrollLeft: (state: any) => void;
-    scrollRight: (state: any) => void;
-    scrollContainerRef:  React.RefObject<HTMLDivElement>;
     handleAnalysisClick: (state: any) => void;
-    filteredSummaries: Summary[];
     selectedAnalysis: any;
+    searchTerm: string;
 }
 
 
-const SummaryCards: React.FC<SummaryCardsProps> = ({scrollLeft, scrollRight, scrollContainerRef, handleAnalysisClick, filteredSummaries, selectedAnalysis}) => {
+const SummaryCards: React.FC<SummaryCardsProps> = ({handleAnalysisClick, selectedAnalysis, searchTerm}) => {
+    const [summaries, setSummaries] = useState<Summary[]>([]);
+    const filteredSummaries = summaries.filter((summary) => {
+        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+        return (
+          summary.bed_number.toLowerCase().includes(lowerCaseSearchTerm) ||
+          'Azalea'.toLowerCase().includes(lowerCaseSearchTerm)
+        );
+      });
+
+    useEffect(() => {
+        const getSummaries = async () => {
+          try {
+            const data = await fetchSummaries();
+            setSummaries(data);
+          } catch (error) {
+            console.error('Error fetching summaries:', error);
+          }
+        };
+    
+        getSummaries();
+      }, []);
+
+
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const scrollLeft = () => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollBy({
+            left: -300,
+            behavior: 'smooth',
+          });
+        }
+      };
+    
+      const scrollRight = () => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollBy({
+            left: 300,
+            behavior: 'smooth',
+          });
+        }
+      };
+    
     return (
         <>
             {/* Scrollable Analysis Overview Cards */}

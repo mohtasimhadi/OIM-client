@@ -3,7 +3,7 @@ import VideoCard from '../components/VideoCard';
 import PlantDetailCard from '../components/PlantDetailCard';
 import Filters from '../components/Filters';
 import { getAverageValue } from '../services/calculations';
-import { fetchSummaries, fetchAnalysisData } from '../services/api';
+import { fetchAnalysisData } from '../services/api';
 import { Plant, Summary, AnalysisData } from '../types';
 import { PiPottedPlantBold } from "react-icons/pi";
 import { FaPlay } from "react-icons/fa";
@@ -33,28 +33,15 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
     confidenceThresholdMax?: number;
   }>({});
 
-  const [summaries, setSummaries] = useState<Summary[]>([]);
+  
   const [selectedAnalysis, setSelectedAnalysis] = useState<Summary | null>(null);
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
   const playerRefOriginal = useRef<ReactPlayer | null>(null);
   const playerRefAnnotated = useRef<ReactPlayer | null>(null);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
-    const getSummaries = async () => {
-      try {
-        const data = await fetchSummaries();
-        setSummaries(data);
-      } catch (error) {
-        console.error('Error fetching summaries:', error);
-      }
-    };
 
-    getSummaries();
-  }, []);
 
   useEffect(() => {
     if (selectedAnalysis) {
@@ -89,24 +76,6 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
       [`${name}Min`]: min,
       [`${name}Max`]: max,
     }));
-  };
-
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: -300,
-        behavior: 'smooth',
-      });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: 300,
-        behavior: 'smooth',
-      });
-    }
   };
 
   // Play/Pause/Stop video controls
@@ -156,24 +125,13 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
     );
   });
 
-  // Filter summaries based on search term for plant name and bed number
-  const filteredSummaries = summaries.filter((summary) => {
-    const lowerCaseSearchTerm = searchTerm.toLowerCase();
-    return (
-      summary.bed_number.toLowerCase().includes(lowerCaseSearchTerm) ||
-      'Azalea'.toLowerCase().includes(lowerCaseSearchTerm)
-    );
-  });
 
   return (
     <div className="p-4 min-h-full">
       <div className="container mx-auto space-y-6">
         <SummaryCards
-          scrollLeft={scrollLeft}
-          scrollRight={scrollRight}
-          scrollContainerRef={scrollContainerRef}
+        searchTerm={searchTerm}
           handleAnalysisClick={handleAnalysisClick}
-          filteredSummaries={filteredSummaries}
           selectedAnalysis={selectedAnalysis}/>
 
         {/* Only display the dashboard after analysis data is fetched */}
