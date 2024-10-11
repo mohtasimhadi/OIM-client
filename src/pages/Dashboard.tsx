@@ -10,6 +10,8 @@ import SummaryCards from '../components/SummaryCards';
 import VideoDash from '../components/VideoDash';
 import TotalOverviewCardXL from '../components/TotalOverViewCardXL';
 import { IoCloudDownloadOutline } from "react-icons/io5";
+import { MdDeleteOutline } from "react-icons/md";
+import { TbAnalyze } from "react-icons/tb";
 
 interface DashboardProps {
   searchTerm: string;
@@ -73,16 +75,47 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
 
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4 w-full rounded-lg pt-4'>
                 <div className='flex flex-col'>
-                  <div className='flex items-center justify-center bg-black/40'>
-                    <button className='flex flex-col items-center justify-center space-x-2 rounded-lg m-2 p-2 hover:bg-white/15'>
-                      <IoCloudDownloadOutline size={48} />
-                      <p>Download XLSX</p>
-                    </button>
+                  {/* Grid layout for the analysis header and buttons */}
+                  <div className='grid grid-cols-1 md:grid-cols-5 gap-4'>
+                    {/* Left section: Grade info */}
+                    <div className='col-span-2 flex items-center justify-center bg-black/40 w-full'>
+                      <div className='space-y-4 w-full p-4'>
+                        <p className='text-4xl font-semibold'>A</p>
+                        <p>Grade</p>
+                      </div>
+                    </div>
 
+                    {/* Right section: Action buttons */}
+                    <div className='col-span-3 flex items-center justify-center w-full bg-black/20'>
+                      <div className='flex flex-row space-x-4'>
+                        {/* Analyze Again Button */}
+                        <button className='flex flex-col items-center justify-center rounded-lg m-2 p-4 hover:bg-white/20'>
+                          <TbAnalyze size={32} />
+                          <p className='text-xs'>Analyze Again</p>
+                        </button>
+
+                        {/* Delete Analysis Button */}
+                        <button className='flex flex-col items-center justify-center rounded-lg m-2 p-4 hover:bg-white/20'>
+                          <MdDeleteOutline size={32} />
+                          <p className='text-xs'>Delete Analysis</p>
+                        </button>
+
+                        {/* Download XLSX Button */}
+                        <button className='flex flex-col items-center justify-center rounded-lg m-2 p-4 hover:bg-white/20'>
+                          <IoCloudDownloadOutline size={32} />
+                          <p className='text-xs'>Download XLSX</p>
+                        </button>
+                      </div>
+                    </div>
                   </div>
+
+                  {/* Spacer */}
                   <p className='p-2'></p>
+
+                  {/* Circularity and Eccentricity Line Graph */}
                   <CircularityAndEccentricityLineGraph data={analysisData?.analysis?.track_data} />
                 </div>
+
                 <div className='flex flex-col'>
                   <AreaAndPerimeterLineGraph data={analysisData?.analysis?.track_data} graph='area' />
                   <p className='p-2' />

@@ -38,7 +38,7 @@ const CircularityAndEccentricityLineGraph: React.FC<CircularityEccentricityProps
 
         <div className="p-2 bg-black/15 w-full">
             <div className='p-5'>
-                <ResponsiveContainer width="100%" height={250}>
+                <ResponsiveContainer width="100%" height={230}>
                     <AreaChart data={enhancedData}>
                         <XAxis dataKey="track_id" interval={10} tick={{ fill: '#ffffff' }}>
                             <Label value="Plant IDs" offset={-5} position="insideBottom" />
