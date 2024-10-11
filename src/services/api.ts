@@ -1,9 +1,10 @@
 import axios from "axios";
 const API_BASE_URL = process.env.REACT_APP_API_GATEWAY_URL;
+const CDN_URL = process.env.REACT_APP_CDN_URL;
 
 export const fetchImage = async (imageID: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/view/image/${imageID}`, {
+    const response = await axios.get(`${CDN_URL}/image/view/${imageID}`, {
       responseType: 'blob',
     });
     if (response.status !== 200) {
@@ -18,7 +19,7 @@ export const fetchImage = async (imageID: string) => {
 
 export const fetchVideo = async (videoID: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/view/video/${videoID}`, {
+    const response = await axios.get(`${CDN_URL}/video/view/${videoID}`, {
       responseType: 'blob',
     });
     if (response.status !== 200) {
