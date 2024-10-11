@@ -184,7 +184,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
             {filteredSummaries.map((summary) => (
               <AnalysisCard
                 key={summary.video_id}
-                plantName="Azalea" // Adjust this dynamically if needed
+                plantName={summary.plants.join(' ')}
                 bedNumber={summary.bed_number}
                 collectionDate={summary.collection_date}
                 onClick={() => handleAnalysisClick(summary)}
@@ -217,7 +217,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                   <div className='w-full flex bg-gradient-to-r from-white-15 via-white-15 to-black-10 rounded-lg hover:scale-105'>
                     <div>
                       <div className="flex items-center pt-4 pl-4 w-full font-semibold text-3xl">
-                        {selectedAnalysis?.bed_number}
+                        {selectedAnalysis?.bed_number} | {selectedAnalysis?.plants?.join(' ')}
                       </div>
                       <div className='flex'>
                         <div className='p-4 flex items-center justify-center'>
@@ -247,8 +247,8 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                   <div className='grid grid-cols-2 md:grid-cols-4 gap-4 w-full'>
                     <TotalOverviewCard title='Average Area' value={getAverageValue(plants, 'area')} color='#808700'/>
                     <TotalOverviewCard title='Average Perimeter' value={getAverageValue(plants, 'perimeter')} color='#00874c'/>
-                    <TotalOverviewCard title='Average Circularity' value={(getAverageValue(plants, 'circularity') * 100) + "%"} color='#000087'/>
-                    <TotalOverviewCard title='Average Eccentricity' value={(getAverageValue(plants, 'eccentricity') * 100) + "%"} color='#500087'/>
+                    <TotalOverviewCard title='Average Circularity' value={parseFloat((getAverageValue(plants, 'circularity') * 100).toFixed(2)) + "%"} color='#000087'/>
+                    <TotalOverviewCard title='Average Eccentricity' value={parseFloat((getAverageValue(plants, 'eccentricity') * 100).toFixed(2)) + "%"} color='#500087'/>
                   </div>
                 </div>
               </div>

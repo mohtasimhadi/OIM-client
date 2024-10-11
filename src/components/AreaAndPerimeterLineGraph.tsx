@@ -39,7 +39,7 @@ const AreaAndPerimeterLineGraph: React.FC<AreaPerimeterProps> = ({ data, graph }
                     <XAxis dataKey="track_id" interval={10} tick={{ fill: '#ffffff' }}>
                         <Label value="Plant IDs" offset={-5} position="insideBottom" />
                     </XAxis>
-                    <YAxis tick={{ fill: '#ffffff' }} label={{ value: 'Pixel^2', angle: -90, position: 'insideLeft' }} />
+                    <YAxis tick={{ fill: '#ffffff' }} label={{ value: graph === 'area' ? `pixel^2` : "pixels", angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend verticalAlign="top" />
                     <Area

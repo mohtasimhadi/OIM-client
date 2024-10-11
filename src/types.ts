@@ -96,6 +96,7 @@ export interface VideoInfo {
     video_id: string;
     bed_number: string;
     collection_date: string;
+    plants: string[];
   }
   
   export interface AnalysisData {
