@@ -13,7 +13,7 @@ interface SummaryCardsProps {
 const SummaryCards: React.FC<SummaryCardsProps> = ({ handleAnalysisClick, selectedAnalysis, searchTerm }) => {
     const [summaries, setSummaries] = useState<Summary[]>([]);
     const [currentPage, setCurrentPage] = useState(0); // Current page for pagination
-    const [cardsPerPage] = useState(4); // Adjust how many cards you want to show per page
+    const [cardsPerPage, setCardsPerPage] = useState(4); // Number of cards per page
     const [cardClicked, setCardClicked] = useState(false); // Track if a card is clicked
 
     const filteredSummaries = summaries.filter((summary) => {
@@ -36,6 +36,24 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ handleAnalysisClick, select
         };
 
         getSummaries();
+
+        // Adjust cards per page based on screen width for mobile friendliness
+        const handleResize = () => {
+            if (window.innerWidth < 640) {
+                setCardsPerPage(1); // Show 1 card per page on mobile screens
+            } else if (window.innerWidth < 1024) {
+                setCardsPerPage(2); // Show 2 cards per page on tablets
+            } else {
+                setCardsPerPage(4); // Default to 4 cards per page on desktop
+            }
+        };
+
+        handleResize(); // Call on component mount
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize); // Cleanup listener on unmount
+        };
     }, []);
 
     const totalPages = Math.ceil(filteredSummaries.length / cardsPerPage);
@@ -70,9 +88,9 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ handleAnalysisClick, select
                     {/* Left arrow */}
                     <button
                         onClick={scrollLeft}
-                        className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-10 text-black"
+                        className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-10 text-black hidden sm:block" // Hide arrows on small screens
                     >
-                        <FaChevronLeft />
+                        <FaChevronLeft size={24} />
                     </button>
 
                     {/* Cards container */}
@@ -91,9 +109,9 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ handleAnalysisClick, select
                     {/* Right arrow */}
                     <button
                         onClick={scrollRight}
-                        className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-10 text-black"
+                        className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-10 text-black hidden sm:block" // Hide arrows on small screens
                     >
-                        <FaChevronRight />
+                        <FaChevronRight size={24} />
                     </button>
                 </div>
 
@@ -103,8 +121,9 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ handleAnalysisClick, select
                         <div
                             key={index}
                             onClick={() => handleDotClick(index)}
-                            className={`cursor-pointer w-3 h-3 mx-1 rounded-full ${index === currentPage ? 'bg-blue-500' : 'bg-gray-300'
-                                }`}
+                            className={`cursor-pointer w-3 h-3 mx-1 rounded-full ${
+                                index === currentPage ? 'bg-blue-500' : 'bg-gray-300'
+                            }`}
                         />
                     ))}
                 </div>
