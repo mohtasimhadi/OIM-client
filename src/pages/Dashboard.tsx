@@ -1,20 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
-import VideoCard from '../components/VideoCard';
+import React, { useState, useEffect } from 'react';
 import PlantDetailCard from '../components/PlantDetailCard';
 import Filters from '../components/Filters';
 import { getAverageValue } from '../services/calculations';
 import { fetchAnalysisData } from '../services/api';
 import { Plant, Summary, AnalysisData } from '../types';
 import { PiPottedPlantBold } from "react-icons/pi";
-import { FaPlay } from "react-icons/fa";
-import { FaPause, FaStop } from 'react-icons/fa6';
-import ReactPlayer from 'react-player';
 import { MdOutlineDateRange } from "react-icons/md";
 import CircularityAndEccentricityLineGraph from '../components/CircularityAndEccentricityLineGraph';
 import TotalOverviewCard from '../components/TotalOverviewCard';
 import { IoCloudDownloadOutline } from "react-icons/io5";
 import AreaAndPerimeterLineGraph from '../components/AreaAndPerimeterLineGraph';
 import SummaryCards from '../components/SummaryCards';
+import VideoDash from '../components/VideoDash';
 
 interface DashboardProps {
   searchTerm: string;
@@ -33,15 +30,8 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
     confidenceThresholdMax?: number;
   }>({});
 
-  
   const [selectedAnalysis, setSelectedAnalysis] = useState<Summary | null>(null);
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
-  const playerRefOriginal = useRef<ReactPlayer | null>(null);
-  const playerRefAnnotated = useRef<ReactPlayer | null>(null);
-  const [playing, setPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-
-
 
   useEffect(() => {
     if (selectedAnalysis) {
@@ -78,33 +68,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
     }));
   };
 
-  // Play/Pause/Stop video controls
 
-  const togglePlayPause = () => {
-    setPlaying(!playing); // Toggles between play and pause
-  };
-
-  const stopVideos = () => {
-    setPlaying(false);
-    if (playerRefOriginal.current && playerRefAnnotated.current) {
-      playerRefOriginal.current.seekTo(0);
-      playerRefAnnotated.current.seekTo(0);
-      setProgress(0); // Reset progress
-    }
-  };
-
-  const handleProgress = (state: any) => {
-    setProgress(state.played); // Update progress bar
-  };
-
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newProgress = parseFloat(e.target.value);
-    setProgress(newProgress);
-    if (playerRefOriginal.current && playerRefAnnotated.current) {
-      playerRefOriginal.current.seekTo(newProgress); // Sync both videos
-      playerRefAnnotated.current.seekTo(newProgress);
-    }
-  };
 
   const plants: Plant[] = analysisData?.analysis?.track_data ?? [];
 
@@ -130,12 +94,12 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
     <div className="p-4 min-h-full">
       <div className="container mx-auto space-y-6">
         <SummaryCards
-        searchTerm={searchTerm}
+          searchTerm={searchTerm}
           handleAnalysisClick={handleAnalysisClick}
-          selectedAnalysis={selectedAnalysis}/>
+          selectedAnalysis={selectedAnalysis} />
 
         {/* Only display the dashboard after analysis data is fetched */}
-        {analysisData && analysisData.analysis && analysisData.video_id && selectedAnalysis ? (
+        {analysisData && analysisData.analysis && analysisData.video_id ? (
           <>
             <div className="rounded-lg shadow-md p-6 bg-white/10 relative">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -171,10 +135,10 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                 </div>
                 <div className="col-span-2 space-y-4 flex flex-col items-center justify-around">
                   <div className='grid grid-cols-2 md:grid-cols-4 gap-4 w-full'>
-                    <TotalOverviewCard title='Average Area' value={getAverageValue(plants, 'area')} color='#808700'/>
-                    <TotalOverviewCard title='Average Perimeter' value={getAverageValue(plants, 'perimeter')} color='#00874c'/>
-                    <TotalOverviewCard title='Average Circularity' value={parseFloat((getAverageValue(plants, 'circularity') * 100).toFixed(2)) + "%"} color='#000087'/>
-                    <TotalOverviewCard title='Average Eccentricity' value={parseFloat((getAverageValue(plants, 'eccentricity') * 100).toFixed(2)) + "%"} color='#500087'/>
+                    <TotalOverviewCard title='Average Area' value={getAverageValue(plants, 'area')} color='#808700' />
+                    <TotalOverviewCard title='Average Perimeter' value={getAverageValue(plants, 'perimeter')} color='#00874c' />
+                    <TotalOverviewCard title='Average Circularity' value={parseFloat((getAverageValue(plants, 'circularity') * 100).toFixed(2)) + "%"} color='#000087' />
+                    <TotalOverviewCard title='Average Eccentricity' value={parseFloat((getAverageValue(plants, 'eccentricity') * 100).toFixed(2)) + "%"} color='#500087' />
                   </div>
                 </div>
               </div>
@@ -197,68 +161,17 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                       A
                     </div>
                   </div>
-
-
-
-
-
-
                 </div>
-
                 <div className="col-span-2 space-y-4 flex flex-col items-center justify-around bg-black/15 p-4 rounded-lg">
-
-                  {/* Video Controls */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-                    <VideoCard
-                      ref={playerRefOriginal}
-                      key={`${analysisData.video_id}`}
-                      title="Original Video"
-                      videoID={analysisData.video_id}
-                      playing={playing}
-                      onProgress={handleProgress}
-                    />
-                    <VideoCard
-                      ref={playerRefAnnotated}
-                      key={`${analysisData.analysis.video_id}`}
-                      title="Annotated Video"
-                      videoID={analysisData.analysis.video_id}
-                      playing={playing}
-                      onProgress={handleProgress}
-                    />
-                  </div>
-                  <div className="flex w-full items-center justify-center space-x-4 my-2">
-                    <div className="flex items-center justify-center space-x-4 my-2">
-                      <button
-                        onClick={togglePlayPause}
-                        className={`px-4 py-2 rounded-full bg-white/15 text-white`}>
-                        {playing ? <FaPause /> : <FaPlay />}
-                      </button>
-                      <button onClick={stopVideos} className="px-4 py-2 rounded-full bg-white/15 text-white"><FaStop /></button>
-                    </div>
-
-                    <input
-                      type="range"
-                      min="0"
-                      max="1"
-                      step="0.01"
-                      value={progress}
-                      onChange={handleSeek}
-                      className="w-full h-2 bg-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
+                  <VideoDash video={analysisData.video_id} annotatedVideo={analysisData.analysis.video_id} />
                 </div>
-
               </div>
-
-
             </div>
-
             <Filters
               filters={filters}
               handleFilterChange={handleFilterChange}
               handleRangeChange={handleRangeChange}
             />
-
             <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
               {filteredPlants.map((plant) => (
                 <PlantDetailCard key={plant.track_id} {...plant} />
