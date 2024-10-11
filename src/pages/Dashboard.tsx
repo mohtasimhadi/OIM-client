@@ -2,11 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import VideoCard from '../components/VideoCard';
 import PlantDetailCard from '../components/PlantDetailCard';
 import Filters from '../components/Filters';
-import AnalysisCard from '../components/AnalysisCard';
 import { getAverageValue } from '../services/calculations';
 import { fetchSummaries, fetchAnalysisData } from '../services/api';
 import { Plant, Summary, AnalysisData } from '../types';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { PiPottedPlantBold } from "react-icons/pi";
 import { FaPlay } from "react-icons/fa";
 import { FaPause, FaStop } from 'react-icons/fa6';
@@ -16,6 +14,7 @@ import CircularityAndEccentricityLineGraph from '../components/CircularityAndEcc
 import TotalOverviewCard from '../components/TotalOverviewCard';
 import { IoCloudDownloadOutline } from "react-icons/io5";
 import AreaAndPerimeterLineGraph from '../components/AreaAndPerimeterLineGraph';
+import SummaryCards from '../components/SummaryCards';
 
 interface DashboardProps {
   searchTerm: string;
@@ -169,44 +168,13 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
   return (
     <div className="p-4 min-h-full">
       <div className="container mx-auto space-y-6">
-        {/* Scrollable Analysis Overview Cards */}
-        <div className="relative flex items-center justify-center">
-          {/* Left Arrow */}
-          <button
-            onClick={scrollLeft}
-            className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-10 text-black"
-          >
-            <FaChevronLeft />
-          </button>
-
-          {/* Scrollable Container */}
-          <div ref={scrollContainerRef} className="flex gap-4 overflow-hidden">
-            {filteredSummaries.map((summary) => (
-              <AnalysisCard
-                key={summary.video_id}
-                plantName={summary.plants.join(' ')}
-                bedNumber={summary.bed_number}
-                collectionDate={summary.collection_date}
-                onClick={() => handleAnalysisClick(summary)}
-              />
-            ))}
-          </div>
-
-          {/* Right Arrow */}
-          <button
-            onClick={scrollRight}
-            className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-10 text-black"
-          >
-            <FaChevronRight />
-          </button>
-        </div>
-
-        {/* Please select message */}
-        {!selectedAnalysis && (
-          <div className="flex justify-center items-center h-40 text-gray-500 text-xl">
-            Please select a bed to view analysis.
-          </div>
-        )}
+        <SummaryCards
+          scrollLeft={scrollLeft}
+          scrollRight={scrollRight}
+          scrollContainerRef={scrollContainerRef}
+          handleAnalysisClick={handleAnalysisClick}
+          filteredSummaries={filteredSummaries}
+          selectedAnalysis={selectedAnalysis}/>
 
         {/* Only display the dashboard after analysis data is fetched */}
         {analysisData && analysisData.analysis && analysisData.video_id && selectedAnalysis ? (
