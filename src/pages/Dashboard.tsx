@@ -9,6 +9,7 @@ import AreaAndPerimeterLineGraph from '../components/AreaAndPerimeterLineGraph';
 import SummaryCards from '../components/SummaryCards';
 import VideoDash from '../components/VideoDash';
 import TotalOverviewCardXL from '../components/TotalOverViewCardXL';
+import { IoCloudDownloadOutline } from "react-icons/io5";
 
 interface DashboardProps {
   searchTerm: string;
@@ -71,7 +72,17 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
 
 
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4 w-full rounded-lg pt-4'>
-                <CircularityAndEccentricityLineGraph data={analysisData?.analysis?.track_data} />
+                <div className='flex flex-col'>
+                  <div className='flex items-center justify-center bg-black/40'>
+                    <button className='flex flex-col items-center justify-center space-x-2 rounded-lg m-2 p-2 hover:bg-white/15'>
+                      <IoCloudDownloadOutline size={48} />
+                      <p>Download XLSX</p>
+                    </button>
+
+                  </div>
+                  <p className='p-2'></p>
+                  <CircularityAndEccentricityLineGraph data={analysisData?.analysis?.track_data} />
+                </div>
                 <div className='flex flex-col'>
                   <AreaAndPerimeterLineGraph data={analysisData?.analysis?.track_data} graph='area' />
                   <p className='p-2' />
@@ -80,7 +91,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pt-12">
-                
+
                 <div className="col-span-1 space-y-4">
                   <div className='w-full flex'>
                     <div className='w-1/2 bg-black/30 rounded-lg p-4'>

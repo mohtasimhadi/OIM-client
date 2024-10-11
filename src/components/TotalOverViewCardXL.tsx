@@ -1,7 +1,6 @@
 import React from 'react';
 import { PiPottedPlantBold } from "react-icons/pi";
 import { MdOutlineDateRange } from "react-icons/md";
-import { IoCloudDownloadOutline } from "react-icons/io5";
 
 interface TotalOverViewXLProps {
     bed_number: string | null;
@@ -33,11 +32,6 @@ const TotalOverviewCardXL: React.FC<TotalOverViewXLProps> = ({ bed_number, plant
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className='flex items-center justify-center ml-4'>
-                <button className='flex items-center justify-center space-x-2 hover:bg-white/15 rounded-lg p-4'>
-                    <IoCloudDownloadOutline size={48} />
-                </button>
             </div>
         </div>
     );
