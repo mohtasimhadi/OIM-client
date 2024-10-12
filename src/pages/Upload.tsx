@@ -13,7 +13,7 @@ const UploadVideo: React.FC = () => {
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const mp4Files = acceptedFiles.filter((file) => file.type === 'video/mp4');
-    setDroppedFiles(mp4Files);
+    setDroppedFiles((prevFiles) => [...prevFiles, ...mp4Files]); // Append new files
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -29,6 +29,11 @@ const UploadVideo: React.FC = () => {
       return;
     }
     setIsModalOpen(true);
+  };
+
+  const handleRemoveFile = (index: number, event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent triggering dropbox onClick
+    setDroppedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   const handleModalSubmit = async (videoInfo: { file: File; bedNumber: string; gpsFile: File | null; collectionDate: string }[]) => {
@@ -62,7 +67,7 @@ const UploadVideo: React.FC = () => {
       {/* Drag and Drop Area */}
       <div
         {...getRootProps()}
-        className={`w-4/5 md:w-1/2 h-1/2 p-10 bg-white/10 border-4 border-dashed rounded-lg flex flex-col items-center justify-center transition-all ${
+        className={`w-4/5 md:w-1/2 h-auto p-10 bg-white/10 border-4 border-dashed rounded-lg flex flex-col items-center justify-center transition-all ${
           isDragActive ? 'border-white-500 bg-white-50' : 'border-white-300'
         }`}
       >
@@ -75,21 +80,27 @@ const UploadVideo: React.FC = () => {
             Drag and drop .mp4 files here, or click to select files
           </p>
         )}
-      </div>
 
-      {/* Display Dropped Files */}
-      {droppedFiles.length > 0 && (
-        <div className="mt-6 w-3/4 md:w-1/2">
-          <h2 className="text-xl font-bold mb-2">Dropped Files:</h2>
-          <ul className="list-disc list-inside bg-white/20 shadow p-4 rounded-lg">
-            {droppedFiles.map((file, index) => (
-              <li key={index} className="text-white-800">
-                {file.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+        {/* Display Dropped Files Inside the Dropbox */}
+        {droppedFiles.length > 0 && (
+          <div className="mt-4 w-full">
+            <h2 className="text-xl font-bold mb-2">Dropped Files:</h2>
+            <ul className="list-disc list-inside bg-white/20 shadow p-4 rounded-lg">
+              {droppedFiles.map((file, index) => (
+                <li key={index} className="flex justify-between items-center text-white-800">
+                  <span>{file.name}</span>
+                  <button
+                    onClick={(e) => handleRemoveFile(index, e)}
+                    className="ml-4 text-red-500 hover:text-red-700 focus:outline-none"
+                  >
+                    <i className="fas fa-trash-alt"></i>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
 
       {/* Upload Button */}
       <button
