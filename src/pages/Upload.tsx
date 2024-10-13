@@ -6,7 +6,7 @@ import { uploadVideos } from '../services/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UploadProps } from '../types';
-import LoadingModal from '../components/DeleteModal';
+import LoadingModal from '../components/LoadingModal';
 
 const UploadVideo: React.FC<UploadProps> = ({setCurrentPage}) => {
   const [droppedFiles, setDroppedFiles] = useState<File[]>([]);

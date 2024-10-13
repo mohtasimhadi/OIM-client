@@ -13,7 +13,8 @@ import { IoCloudDownloadOutline } from "react-icons/io5";
 import { MdDeleteOutline } from "react-icons/md";
 import { TbAnalyze } from "react-icons/tb";
 import { toast } from 'react-toastify';
-import LoadingModal from '../components/DeleteModal';
+import LoadingModal from '../components/LoadingModal';
+import { ToastContainer } from 'react-toastify';
 
 interface DashboardProps {
   searchTerm: string;
@@ -35,6 +36,17 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
           setPlants(data?.analysis?.track_data)
         } catch (error) {
           console.error('Error fetching analysis data:', error);
+          setSelectedAnalysis(null)
+          toast("Couldn't fetch data!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
         }
       };
 
@@ -53,9 +65,27 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
       await deleteAnalysis(videoID);
       setSelectedAnalysis(null);
       setAnalysisData(null);
-      toast.success("Analysis deleted successfully!");
+      toast.success("Analysis deleted successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
     } catch (error) {
-      toast.error("Failed to delete analysis.");
+      toast.error("Failed to delete analysis.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
     } finally {
       setIsLoading(false);
     }
@@ -63,6 +93,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
 
   return (
     <div className="p-4 min-h-full">
+      <ToastContainer/>
       <LoadingModal show={isLoading} message='Deleting analysis...' />
       <div className="container mx-auto space-y-6">
         <SummaryCards
