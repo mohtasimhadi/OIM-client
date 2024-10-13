@@ -36,7 +36,9 @@ export interface AreaPerimeterProps {
 export interface TotalOverViewProps {
   title: string;
   value: number | string;
-  color: string;
+  color1: string;
+  color2: string;
+  color3: string;
 }
 
 export interface UploadProps{

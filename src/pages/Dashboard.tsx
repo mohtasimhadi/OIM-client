@@ -81,10 +81,10 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                 </div>
                 <div className="col-span-2 space-y-4 flex flex-col items-center justify-around">
                   <div className='grid grid-cols-2 md:grid-cols-4 gap-4 w-full'>
-                    <TotalOverviewCard title='Average Area' value={getAverageValue(analysisData?.analysis?.track_data, 'area')} color='#808700' />
-                    <TotalOverviewCard title='Average Perimeter' value={getAverageValue(analysisData?.analysis?.track_data, 'perimeter')} color='#00874c' />
-                    <TotalOverviewCard title='Average Circularity' value={parseFloat((getAverageValue(analysisData?.analysis?.track_data, 'circularity') * 100).toFixed(2)) + "%"} color='#000087' />
-                    <TotalOverviewCard title='Average Eccentricity' value={parseFloat((getAverageValue(analysisData?.analysis?.track_data, 'eccentricity') * 100).toFixed(2)) + "%"} color='#500087' />
+                    <TotalOverviewCard title='Average Area' value={getAverageValue(analysisData?.analysis?.track_data, 'area')} color1='#3f6212' color2='#65a30d' color3='#a3e635' />
+                    <TotalOverviewCard title='Average Perimeter' value={getAverageValue(analysisData?.analysis?.track_data, 'perimeter')} color1='#166534' color2='#16a34a' color3='#4ade80' />
+                    <TotalOverviewCard title='Average Circularity' value={parseFloat((getAverageValue(analysisData?.analysis?.track_data, 'circularity') * 100).toFixed(2)) + "%"} color1='#155e75' color2='#0284c7' color3='#38bdf8'  />
+                    <TotalOverviewCard title='Average Eccentricity' value={parseFloat((getAverageValue(analysisData?.analysis?.track_data, 'eccentricity') * 100).toFixed(2)) + "%"} color1='#3730a3' color2='#4f46e5' color3='#818cf8' />
                   </div>
                 </div>
 
@@ -96,10 +96,10 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                   {/* Grid layout for the analysis header and buttons */}
                   <div className='grid grid-cols-1 md:grid-cols-5 gap-4'>
                     {/* Left section: Grade info */}
-                    <div className='col-span-2 flex items-center justify-center bg-black/40 w-full'>
+                    <div className='col-span-2 flex items-center justify-center bg-red-700/70 w-full'>
                       <div className='space-y-4 w-full p-4'>
-                        <p className='text-4xl font-semibold'>A</p>
-                        <p>Grade</p>
+                        <p className='text-4xl font-semibold'>Grade D</p>
+                        <p>Low quality bed</p>
                       </div>
                     </div>
 
