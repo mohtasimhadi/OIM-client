@@ -69,6 +69,7 @@ export interface PlantDetailCardProps {
   confidence: number;
   appearance: string;
   rating: string;
+  class_name: string;
 }
 
 export interface QualityChartProps {
@@ -94,6 +95,7 @@ export interface Plant {
   confidence: number;
   appearance: string;
   rating: string;
+  class_name: string;
 }
 
 export interface Summary {
