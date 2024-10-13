@@ -48,7 +48,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
   };
 
   const handleDeleteAnalysis = async (videoID: string | any) => {
-    setIsLoading(true);  // Show loading modal
+    setIsLoading(true);
     try {
       await deleteAnalysis(videoID);
       setSelectedAnalysis(null);
@@ -57,7 +57,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
     } catch (error) {
       toast.error("Failed to delete analysis.");
     } finally {
-      setIsLoading(false);  // Hide loading modal
+      setIsLoading(false);
     }
   };
 
@@ -96,7 +96,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                   {/* Grid layout for the analysis header and buttons */}
                   <div className='grid grid-cols-1 md:grid-cols-5 gap-4'>
                     {/* Left section: Grade info */}
-                    <div className='col-span-2 flex items-center justify-center bg-red-700/70 w-full'>
+                    <div className='col-span-2 flex items-center justify-center bg-gradient-to-r from-red-800 via-red-600 to-red-400 w-full'>
                       <div className='space-y-4 w-full p-4'>
                         <p className='text-4xl font-semibold'>Grade D</p>
                         <p>Low quality bed</p>

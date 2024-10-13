@@ -20,7 +20,7 @@ const Dock: React.FC<DockProps> = ({
     >
       {/* Smooth transition for search bar */}
       <div
-        className={`flex items-center relative transition-all duration-500 ease-linear ${
+        className={`flex items-center relative transition-all duration-500 ease-linear mr-4 ${
           currentPage === "dashboard" ? "w-1/3 opacity-100" : "w-0 opacity-0"
         } pl-3 overflow-hidden`}
       >
@@ -39,12 +39,12 @@ const Dock: React.FC<DockProps> = ({
       </div>
 
       <div
-        className={`flex items-center justify-around w-${
-          currentPage === "dashboard" ? "2/3" : "full"
-        }`}
+        className={`flex items-center justify-around ${
+          currentPage === "dashboard" ? "w-2/3" : "w-full"
+        } transition-all duration-500 ease-linear`}
       >
         <button
-          className={`text-center flex items-center space-x-2 transition-colors ${
+          className={`text-center flex items-center space-x-2 transition-colors duration-500 ease-linear mr-4 ${
             currentPage === "dashboard"
               ? darkMode
                 ? "text-blue-400"
@@ -53,12 +53,13 @@ const Dock: React.FC<DockProps> = ({
           } font-bold`}
           onClick={() => setCurrentPage("dashboard")}
         >
-          
-          <span className="flex items-center" ><MdOutlineDashboard className="mr-2"/> Dashboard</span>
+          <span className="flex items-center">
+            <MdOutlineDashboard className="mr-2" /> Dashboard
+          </span>
         </button>
 
         <button
-          className={`text-center flex items-center space-x-2 transition-colors ${
+          className={`text-center flex items-center space-x-2 transition-colors duration-500 ease-linear mr-4 ${
             currentPage === "map"
               ? darkMode
                 ? "text-blue-400"
@@ -67,11 +68,13 @@ const Dock: React.FC<DockProps> = ({
           } font-bold`}
           onClick={() => setCurrentPage("map")}
         >
-          <span className="flex items-center"><FaMapLocationDot className="mr-2"/> Map</span>
+          <span className="flex items-center">
+            <FaMapLocationDot className="mr-2" /> Map
+          </span>
         </button>
 
         <button
-          className={`text-center flex items-center space-x-2 transition-colors ${
+          className={`text-center flex items-center space-x-2 transition-colors duration-500 ease-linear mr-4 ${
             currentPage === "rover"
               ? darkMode
                 ? "text-blue-400"
@@ -80,11 +83,13 @@ const Dock: React.FC<DockProps> = ({
           } font-bold`}
           onClick={() => setCurrentPage("rover")}
         >
-          <span className="flex items-center"><GiMarsCuriosity className="mr-2"/> Rover</span>
+          <span className="flex items-center">
+            <GiMarsCuriosity className="mr-2" /> Rover
+          </span>
         </button>
 
         <button
-          className={`text-center flex items-center space-x-2 transition-colors ${
+          className={`text-center flex items-center space-x-2 transition-colors duration-500 ease-linear mr-4 ${
             currentPage === "upload"
               ? darkMode
                 ? "text-blue-400"
@@ -93,7 +98,10 @@ const Dock: React.FC<DockProps> = ({
           } font-bold`}
           onClick={() => setCurrentPage("upload")}
         >
-          <span className="flex items-center"><IoCloudUpload className="mr-2"/>Upload</span>
+          <span className="flex items-center">
+            <IoCloudUpload className="mr-2" />
+            Upload
+          </span>
         </button>
 
         <div className="h-6 w-px bg-white mx-4"></div>
