@@ -75,7 +75,7 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ handleAnalysisClick, select
         handleAnalysisClick(summary);
     };
 
-    const currentSummaries = filteredSummaries.slice(
+    const currentSummaries = filteredSummaries.reverse().slice(
         currentPage * cardsPerPage,
         (currentPage + 1) * cardsPerPage
     );

@@ -6,6 +6,7 @@ import { uploadVideos } from '../services/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UploadProps } from '../types';
+import LoadingModal from '../components/DeleteModal';
 
 const UploadVideo: React.FC<UploadProps> = ({setCurrentPage}) => {
   const [droppedFiles, setDroppedFiles] = useState<File[]>([]);
@@ -51,19 +52,9 @@ const UploadVideo: React.FC<UploadProps> = ({setCurrentPage}) => {
     }
   };
 
-  if (isUploading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-black/50">
-        <div className="flex flex-col items-center">
-          <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4"></div>
-          <p className="text-white text-lg font-semibold">Uploading files, please stay on this page and wait...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col items-center justify-center h-full p-4">
+      <LoadingModal show={isUploading} message='Uploading video(s). Please wait when the files are being analyzied.'/>
       <ToastContainer />
       {/* Drag and Drop Area */}
       <div

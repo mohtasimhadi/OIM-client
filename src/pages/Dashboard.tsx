@@ -13,7 +13,7 @@ import { IoCloudDownloadOutline } from "react-icons/io5";
 import { MdDeleteOutline } from "react-icons/md";
 import { TbAnalyze } from "react-icons/tb";
 import { toast } from 'react-toastify';
-import DeleteModal from '../components/DeleteModal';
+import LoadingModal from '../components/DeleteModal';
 
 interface DashboardProps {
   searchTerm: string;
@@ -63,7 +63,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
 
   return (
     <div className="p-4 min-h-full">
-      <DeleteModal show={isLoading} />
+      <LoadingModal show={isLoading} message='Deleting analysis...' />
       <div className="container mx-auto space-y-6">
         <SummaryCards
           searchTerm={searchTerm}
