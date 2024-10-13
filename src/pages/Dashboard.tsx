@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PlantDetailCard from '../components/PlantDetailCard';
 import { getAverageValue } from '../services/calculations';
-import { fetchAnalysisData, deleteAnalysis } from '../services/api';
+import { fetchAnalysisData, deleteAnalysis, downloadXLSX } from '../services/api';
 import { Plant, Summary, AnalysisData } from '../types';
 import CircularityAndEccentricityLineGraph from '../components/CircularityAndEccentricityLineGraph';
 import TotalOverviewCard from '../components/TotalOverviewCard';
@@ -53,6 +53,15 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
       getAnalysisData();
     }
   }, [selectedAnalysis]);
+
+  const handleDownloadXLSX = () => {
+    if (selectedAnalysis) {
+      downloadXLSX(analysisData, selectedAnalysis?.bed_number+'_'+selectedAnalysis.plants.join('_')+'_'+selectedAnalysis.collection_date);
+    } else {
+      toast.error("No analysis selected.", { /* toast options */ });
+    }
+  };
+  
 
   const handleSummaryClick = (summary: Summary) => {
     setAnalysisData(null)
@@ -150,7 +159,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                         </button>
 
                         {/* Download XLSX Button */}
-                        <button className='flex flex-col items-center justify-center rounded-lg m-2 p-4 hover:bg-white/20'>
+                        <button className='flex flex-col items-center justify-center rounded-lg m-2 p-4 hover:bg-white/20' onClick={handleDownloadXLSX}>
                           <IoCloudDownloadOutline size={32} />
                           <p className='text-xs'>Download XLSX</p>
                         </button>

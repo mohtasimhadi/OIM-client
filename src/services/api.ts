@@ -95,3 +95,26 @@ export const deleteAnalysis = async (videoID: string) => {
     throw error;
   }
 }
+
+export const downloadXLSX = async (selectedAnalysis: any, filename: string) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/view/xlsx`,
+      selectedAnalysis,
+      { responseType: 'blob' }
+    );
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${filename}.xlsx`);
+    document.body.appendChild(link);
+    link.click();
+
+    if (link.parentNode) {
+      link.parentNode.removeChild(link);
+    }
+  } catch (error) {
+    console.error('Error downloading XLSX:', error);
+  }
+};
