@@ -84,3 +84,14 @@ export const fetchAnalysisData = async (videoId: string) => {
     throw error;
   }
 };
+
+export const deleteAnalysis = async (videoID: string) => {
+  try {
+    const apiUrl = `${API_BASE_URL}/delete/${encodeURIComponent(videoID)}`;
+    const response = await axios.get(apiUrl);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting analysis.', error)
+    throw error;
+  }
+}

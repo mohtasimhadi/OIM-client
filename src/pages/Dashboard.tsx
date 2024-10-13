@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PlantDetailCard from '../components/PlantDetailCard';
 import { getAverageValue } from '../services/calculations';
-import { fetchAnalysisData } from '../services/api';
+import { fetchAnalysisData, deleteAnalysis } from '../services/api';
 import { Plant, Summary, AnalysisData } from '../types';
 import CircularityAndEccentricityLineGraph from '../components/CircularityAndEccentricityLineGraph';
 import TotalOverviewCard from '../components/TotalOverviewCard';
@@ -12,6 +12,8 @@ import TotalOverviewCardXL from '../components/TotalOverViewCardXL';
 import { IoCloudDownloadOutline } from "react-icons/io5";
 import { MdDeleteOutline } from "react-icons/md";
 import { TbAnalyze } from "react-icons/tb";
+import { toast } from 'react-toastify';
+import DeleteModal from '../components/DeleteModal';
 
 interface DashboardProps {
   searchTerm: string;
@@ -22,6 +24,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
   const [selectedAnalysis, setSelectedAnalysis] = useState<Summary | null>(null);
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
   const [plants, setPlants] = useState<Plant[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (selectedAnalysis) {
@@ -44,8 +47,23 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
     setSelectedAnalysis(summary);
   };
 
+  const handleDeleteAnalysis = async (videoID: string | any) => {
+    setIsLoading(true);  // Show loading modal
+    try {
+      await deleteAnalysis(videoID);
+      setSelectedAnalysis(null);
+      setAnalysisData(null);
+      toast.success("Analysis deleted successfully!");
+    } catch (error) {
+      toast.error("Failed to delete analysis.");
+    } finally {
+      setIsLoading(false);  // Hide loading modal
+    }
+  };
+
   return (
     <div className="p-4 min-h-full">
+      <DeleteModal show={isLoading} />
       <div className="container mx-auto space-y-6">
         <SummaryCards
           searchTerm={searchTerm}
@@ -95,7 +113,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm }) => {
                         </button>
 
                         {/* Delete Analysis Button */}
-                        <button className='flex flex-col items-center justify-center rounded-lg m-2 p-4 hover:bg-white/20'>
+                        <button className='flex flex-col items-center justify-center rounded-lg m-2 p-4 hover:bg-white/20' onClick={() => handleDeleteAnalysis(selectedAnalysis?.video_id)}>
                           <MdDeleteOutline size={32} />
                           <p className='text-xs'>Delete Analysis</p>
                         </button>
