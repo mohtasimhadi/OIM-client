@@ -39,6 +39,10 @@ export interface TotalOverViewProps {
   color: string;
 }
 
+export interface UploadProps{
+  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
+}
+
 export interface DockProps {
   darkMode: boolean;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;

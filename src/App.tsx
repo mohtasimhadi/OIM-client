@@ -27,7 +27,7 @@ const App: React.FC = () => {
       <div className="h-full w-full overflow-y-auto pt-24">
         {currentPage === 'dashboard' && <Dashboard searchTerm={searchTerm} />} {/* Pass searchTerm to Dashboard */}
         {currentPage === 'map' && <Map />}
-        {currentPage === 'upload' && <Upload />}
+        {currentPage === 'upload' && <Upload setCurrentPage={setCurrentPage} />}
         {currentPage === 'rover' && <RoverDash />}
       </div>
     </div>

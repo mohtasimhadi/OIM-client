@@ -5,8 +5,9 @@ import UploadModal from '../components/UploadModal';
 import { uploadVideos } from '../services/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { UploadProps } from '../types';
 
-const UploadVideo: React.FC = () => {
+const UploadVideo: React.FC<UploadProps> = ({setCurrentPage}) => {
   const [droppedFiles, setDroppedFiles] = useState<File[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -32,15 +33,15 @@ const UploadVideo: React.FC = () => {
   };
 
   const handleRemoveFile = (index: number, event: React.MouseEvent) => {
-    event.stopPropagation(); // Prevent triggering dropbox onClick
+    event.stopPropagation();
     setDroppedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   const handleModalSubmit = async (videoInfo: { file: File; bedNumber: string; gpsFile: File | null; collectionDate: string }[]) => {
     try {
       setIsUploading(true);
-      const result = await uploadVideos(videoInfo);
-      toast.success('Upload process completed!', result);
+      await uploadVideos(videoInfo);
+      setCurrentPage("dashboard")
       setDroppedFiles([]);
     } catch (error) {
       toast.error('An error occurred during the upload. Please check the console for more details.');
