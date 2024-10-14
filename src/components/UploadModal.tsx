@@ -8,7 +8,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ files, onClose, onSubmit }) =
     // Initialize video info state for each uploaded file
     const initialVideoInfo = files.map((file) => ({
       file,
-      bedNumber: '',
+      bedNumber: file.name.replace('.mp4', ''),
       gpsFile: null,
       collectionDate: new Date().toISOString().split('T')[0], // Set default date to today
     }));
