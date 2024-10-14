@@ -83,7 +83,7 @@ const UploadVideo: React.FC<UploadProps> = ({setCurrentPage}) => {
                   <span>{file.name}</span>
                   <button
                     onClick={(e) => handleRemoveFile(index, e)}
-                    className="ml-4 text-red-500 hover:text-red-700 focus:outline-none"
+                    className="ml-4 text-white hover:text-gray-400 focus:outline-none"
                   >
                     <i className="fas fa-trash-alt"></i>
                   </button>
