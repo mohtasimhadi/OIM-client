@@ -14,7 +14,7 @@ interface MotorCardProps {
 
 const MotorCard: React.FC<MotorCardProps> = ({ motor, volt, rpm, temp, amp }) => {
     return (
-        <div className='w-full flex bg-black/20 rounded-lg hover:scale-105'>
+        <div className='w-full flex bg-gradient-to-r from-white-15 via-white-15 to-black-10 rounded-lg hover:scale-105'>
             <div>
                 <div className='grid grid-cols-2 gap-4'>
                     <div className='p-4 items-center'>
