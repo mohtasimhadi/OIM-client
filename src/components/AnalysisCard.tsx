@@ -8,7 +8,7 @@ const AnalysisCard: React.FC<AnalysisCardProps> = ({ plantName, bedNumber, colle
   return (
     <div
       onClick={onClick}
-      className="min-w-1/2 h-[auto] p-4 bg-white/20 rounded-lg shadow-md cursor-pointer transition-transform transform hover:scale-105 hover:bg-white/30"
+      className="min-w-1/2 h-[auto] p-4 bg-gradient-to-r from-black/50 via-black/35 to-black/20 rounded-lg shadow-md cursor-pointer transition-transform transform hover:scale-105 hover:bg-black/30"
       style={{ minWidth: '300px' }}
     >
       <h3 className="text-lg font-semibold mb-2 flex items-center"><SiNamecheap className='mr-2'/> {bedNumber}</h3>
