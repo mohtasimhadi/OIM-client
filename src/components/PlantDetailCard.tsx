@@ -85,8 +85,9 @@ const PlantDetailCard: React.FC<PlantDetailCardProps> = ({
       {/* Content */}
       <div className="flex flex-col md:flex-row">
         {/* Left Column - Plant Image */}
-        <div className="w-full md:w-1/3 mb-4 md:mb-0">
-          <img src={imageUrl} alt="Plant" className="w-full aspect-square object-cover rounded-md shadow-lg" />
+        <div className="w-full aspect-square md:w-1/3 mb-4 md:mb-0 bg-white/10">
+        <img src={imageUrl} alt="Plant" className="w-full h-full rounded-md shadow-lg" />
+
         </div>
 
         {/* Right Column - Details */}
