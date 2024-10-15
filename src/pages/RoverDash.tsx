@@ -4,6 +4,7 @@ import { SlSpeedometer } from "react-icons/sl";
 import { MdMyLocation } from "react-icons/md";
 import { CiTempHigh } from "react-icons/ci";
 import MotorCard from "../components/RoverDashboard/MotorCard";
+import CameraCard from "../components/RoverDashboard/CameraCard";
 
 
 const RoverDashboard = () => {
@@ -54,26 +55,25 @@ const RoverDashboard = () => {
 
 
           </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            {/* Motor Status */}
+            <div className="col-span-1 space-y-4 flex flex-col items-center justify-around w-full">
+              <div className="grid grid-cols-2 gap-4 w-full">
+                <MotorCard motor="A" volt={43} rpm={0} temp={84} amp={0} />
+                <MotorCard motor="B" volt={43} rpm={0} temp={84} amp={0} />
+                <MotorCard motor="C" volt={43} rpm={0} temp={84} amp={0} />
+                <MotorCard motor="D" volt={43} rpm={0} temp={84} amp={0} />
+              </div>
+            </div>
 
-          {/* Motor Status */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
-            <MotorCard motor='A' volt={43} rpm={0} temp={84} amp={0} />
-            <MotorCard motor='B' volt={43} rpm={0} temp={84} amp={0} />
-            <MotorCard motor='C' volt={43} rpm={0} temp={84} amp={0} />
-            <MotorCard motor='D' volt={43} rpm={0} temp={84} amp={0} />
+            {/* Camera Status */}
+            <div className="col-span-2 space-y-4 flex flex-col items-center justify-around">
+              <div className="grid grid-cols-1 gap-4 w-full">
+                <CameraCard/>
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            <div className="w-full aspect-video flex bg-black/20 rounded-lg hover:scale-105">
-              <div className="w-full flex items-center justify-center"><p>Click here to check Zed Camera 1 Status</p></div>
-            </div>
-            <div className="w-full aspect-video flex bg-black/20 rounded-lg hover:scale-105">
-              <div className="w-full flex items-center justify-center"><p>Click here to check OAK-D Camera 1 Status</p></div>
-            </div>
-            <div className="w-full aspect-video flex bg-black/20 rounded-lg hover:scale-105">
-              <div className="w-full flex items-center justify-center"><p>Click here to check OAK-D Camera 2 Status</p></div>
-            </div>
-          </div>
         </div>
 
 
