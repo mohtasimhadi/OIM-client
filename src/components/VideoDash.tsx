@@ -56,7 +56,7 @@ const VideoDash: React.FC<VideoDashProps> = ({ video, annotatedVideo }) => {
                 <VideoCard
                     ref={playerRefAnnotated}
                     key={`${annotatedVideo}`}
-                    title="Annotated Video"
+                    title="Predicted Video"
                     videoID={annotatedVideo}
                     playing={playing}
                     onProgress={handleProgress}
